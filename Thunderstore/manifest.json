@@ -1,8 +1,8 @@
 ﻿{
-  "name": "ItemBase",
+  "name": "BetterAPI",
   "version_number": "1.0.0",
-  "website_url": "https://github.com/xoxfaby/ItemBase",
-  "description": "My own item helper thingy, no guarnatees that you can use this but you're free to try.",
+  "website_url": "https://github.com/xoxfaby/BetterAPI",
+  "description": "Very simple API implementation.",
   "dependencies": [
     "bbepis-BepInExPack-5.3.1",
     "XoXFaby-MMHOOK_Standalone-1.0.1"
