@@ -353,9 +353,10 @@ MigrationBackup/
 .ionide/
 
 thunder.zip
-ItemBase.dll
+BetterAPI.dll
 Thunderstore/thunder.zip
 Unity/Assets/AssetBundleBrowser/
 Unity/Assets/TextMesh Pro/
 Unity/Library/
 Unity/Temp/
+Thunderstore/BetterAPI.dll

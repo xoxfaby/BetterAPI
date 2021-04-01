@@ -8,13 +8,19 @@ using System.Reflection;
 
 namespace BetterAPI
 {
-    [BepInPlugin("com.xoxfaby.BetterAPI", "BetterAPI", "1.0.0.1")]
+    [BepInPlugin("com.xoxfaby.BetterAPI", "BetterAPI", "1.1.0.1")]
     public class BetterAPI : BaseUnityPlugin
     {
         public void Awake()
         {
             On.RoR2.ContentManager.SetContentPacks += ContentManager_SetContentPacks;
         }
+
+        public void Start()
+        {
+            Items.ApplyCustomItemDisplayRules();
+        }
+
         private static void ContentManager_SetContentPacks(On.RoR2.ContentManager.orig_SetContentPacks orig, List<ContentPack> newContentPacks)
         {
             ContentPack contentPack = new ContentPack();

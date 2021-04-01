@@ -28,5 +28,8 @@ https://github.com/xoxfaby/BetterAPI
 
 ## Changelog
 
+## v1.1.0
+ - ITems: Added ItemDisplay support
+
 ## v1.0.0
  - Inital Release
