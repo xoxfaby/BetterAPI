@@ -28,6 +28,14 @@ https://github.com/xoxfaby/BetterAPI
 
 ## Changelog
 
+
+## v1.1.1
+ - Items: Improved ItemDisplay support:
+   - Set ItemDisplay by CharacterModel name or bodyPrefab name
+   - Easier to use CharacterItemDisplayRuleSet helper to make adding ItemDisplays super simple
+   - ItemDisplay component automatically added to followerPrefab if it's missing to avoid errors.
+   - Fully backwards compatible, but I encourage using the new helper, once again see MoreItems for examples. 
+
 ## v1.1.0
  - ITems: Added ItemDisplay support
 
