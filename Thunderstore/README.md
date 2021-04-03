@@ -28,8 +28,10 @@ https://github.com/xoxfaby/BetterAPI
 
 ## Changelog
 
+### v1.1.2
+ - Items: Added ability to add ItemDisplays to characters that didn't originally have an ItemDisplayRuleSet (Heretic)
 
-## v1.1.1
+### v1.1.1
  - Items: Improved ItemDisplay support:
    - Set ItemDisplay by CharacterModel name or bodyPrefab name
    - Easier to use CharacterItemDisplayRuleSet helper to make adding ItemDisplays super simple

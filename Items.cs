@@ -83,26 +83,30 @@ namespace BetterAPI
             foreach (var bodyPrefab in BodyCatalog.allBodyPrefabs)
             {
                 CharacterModel characterModel = bodyPrefab.GetComponentInChildren<CharacterModel>();
-                if (characterModel && characterModel.itemDisplayRuleSet)
+                if (characterModel)
                 {
-                    Dictionary<UnityEngine.Object, ItemDisplayRule[]> bodyPrefabItemDisplayRulesDict;
-                    if (bodyPrefabItemDisplayRulesDicts.TryGetValue(bodyPrefab.name, out bodyPrefabItemDisplayRulesDict)
-                           || bodyPrefabItemDisplayRulesDicts.TryGetValue("", out bodyPrefabItemDisplayRulesDict))
+                    if ((bodyPrefabItemDisplayRulesDicts.TryGetValue(bodyPrefab.name, out var bodyPrefabItemDisplayRulesDict)
+                        || bodyPrefabItemDisplayRulesDicts.TryGetValue("", out bodyPrefabItemDisplayRulesDict))
+                        | (characterModelItemDisplayRulesDicts.TryGetValue(characterModel.name, out var characterModelItemDisplayRulesDict)
+                        || characterModelItemDisplayRulesDicts.TryGetValue("", out characterModelItemDisplayRulesDict)))
                     {
-                        foreach (var bodyPrefabItemDisplayRule in bodyPrefabItemDisplayRulesDict)
+                        if (!characterModel.itemDisplayRuleSet)
                         {
-                            characterModel.itemDisplayRuleSet.SetDisplayRuleGroup(bodyPrefabItemDisplayRule.Key, new DisplayRuleGroup { rules = bodyPrefabItemDisplayRule.Value });
+                            characterModel.itemDisplayRuleSet = ScriptableObject.CreateInstance<ItemDisplayRuleSet>();
                         }
-                        characterModel.itemDisplayRuleSet.GenerateRuntimeValues();
-                    }
-
-                    Dictionary<UnityEngine.Object, ItemDisplayRule[]> characterModelItemDisplayRulesDict;
-                    if (characterModelItemDisplayRulesDicts.TryGetValue(characterModel.name, out characterModelItemDisplayRulesDict)
-                        || characterModelItemDisplayRulesDicts.TryGetValue("", out characterModelItemDisplayRulesDict))
-                    {
-                        foreach (var characterModelItemDisplayRule in characterModelItemDisplayRulesDict)
+                        if (bodyPrefabItemDisplayRulesDict != null)
                         {
-                            characterModel.itemDisplayRuleSet.SetDisplayRuleGroup(characterModelItemDisplayRule.Key, new DisplayRuleGroup { rules = characterModelItemDisplayRule.Value } );
+                            foreach (var bodyPrefabItemDisplayRule in bodyPrefabItemDisplayRulesDict)
+                            {
+                                characterModel.itemDisplayRuleSet.SetDisplayRuleGroup(bodyPrefabItemDisplayRule.Key, new DisplayRuleGroup { rules = bodyPrefabItemDisplayRule.Value });
+                            }
+                        }
+                        if (characterModelItemDisplayRulesDict != null)
+                        {
+                            foreach (var bodyPrefabItemDisplayRule in characterModelItemDisplayRulesDict)
+                            {
+                                characterModel.itemDisplayRuleSet.SetDisplayRuleGroup(bodyPrefabItemDisplayRule.Key, new DisplayRuleGroup { rules = bodyPrefabItemDisplayRule.Value });
+                            }
                         }
                         characterModel.itemDisplayRuleSet.GenerateRuntimeValues();
                     }
