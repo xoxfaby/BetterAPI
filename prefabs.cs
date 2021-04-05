@@ -32,7 +32,9 @@ namespace BetterAPI
 
         public static GameObject FromGameObject(GameObject gameObject)
         {
-            return UnityEngine.Object.Instantiate(gameObject, ((GameObject) prefabParent).transform);
+            var prefab = UnityEngine.Object.Instantiate(gameObject, prefabParent.transform);
+            Add(prefab);
+            return prefab;
         }
 
         public static void Add(GameObject prefab)
