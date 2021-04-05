@@ -15,5 +15,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          branch: 'main'
           allowlist: 'xoxfaby' 
           url-to-cladocument: 'https://github.com/xoxfaby/BetterAPI/blob/main/CLA.md'
