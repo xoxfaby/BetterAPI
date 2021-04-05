@@ -42,7 +42,12 @@ namespace BetterAPI
             SkyMeadow = 16384,
             BullwarksAmbry = 32768,
             Commencement = 65536,
-            SunderedGrove = 131072
+            SunderedGrove = 131072,
+
+            //Add new values before this point
+            Last,
+            All = (Last << 1) - 3,
+            Default = AbandonedAqueduct | AbyssalDepths | DistantRoost | RallypointDelta | ScorchedAcres | SirensCall | SkyMeadow | SunderedGrove | TitanicPlains | WetlandAspect
         }
 
         public static Dictionary<Stages, string> SceneNames = new Dictionary<Stages, string>()
