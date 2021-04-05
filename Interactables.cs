@@ -5,13 +5,14 @@ using RoR2;
 using RoR2.Navigation;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 namespace BetterAPI
 {
     public class Interactables
     {
         public static RoR2.TemporaryVisualEffect myTempEffect;
-        public enum category
+        public enum Category
         { 
             Chests,
             Barrels,
@@ -21,6 +22,49 @@ namespace BetterAPI
             Rare,
             Duplicator
         }
+
+        [Flags]
+        public enum Stages
+        {
+            TitanicPlains = 2,
+            DistantRoost = 4,
+            WetlandAspect = 8,
+            AbandonedAqueduct = 16,
+            RallypointDelta = 32,
+            ScorchedAcres = 64,
+            AbyssalDepths = 128,
+            SirensCall = 256,
+            GildedCoast = 512,
+            MomentFractured = 1024,
+            Bazaar = 2048,
+            VoidCell = 4096,
+            MomentWhole = 8192,
+            SkyMeadow = 16384,
+            BullwarksAmbry = 32768,
+            Commencement = 65536,
+            SunderedGrove = 131072
+        }
+
+        public static Dictionary<Stages, string> SceneNames = new Dictionary<Stages, string>()
+        {
+            { Stages.TitanicPlains, "golemplains" },
+            { Stages.DistantRoost, "blackbeach" },
+            { Stages.WetlandAspect, "foggyswamp" },
+            { Stages.AbandonedAqueduct, "goolake" },
+            { Stages.RallypointDelta, "frozenwall" },
+            { Stages.ScorchedAcres, "wispgraveyard" },
+            { Stages.AbyssalDepths, "dampcavesimple" },
+            { Stages.SirensCall, "shipgraveyard" },
+            { Stages.GildedCoast, "goldshores" },
+            { Stages.MomentFractured, "mysteryspace" },
+            { Stages.Bazaar, "bazaar" },
+            { Stages.VoidCell, "arena" },
+            { Stages.MomentWhole, "limbo" },
+            { Stages.SkyMeadow, "skymeadow" },
+            { Stages.BullwarksAmbry, "artifactworld" },
+            { Stages.Commencement, "moon" },
+            { Stages.SunderedGrove, "rootjungle" }
+        };
 
         private static List<interactableInfo> registeredInteractables = new List<interactableInfo>();
 
@@ -62,14 +106,73 @@ namespace BetterAPI
                 ClassicStageInfo stageInfo = SceneInfo.instance.GetComponent<ClassicStageInfo>();
                 foreach(interactableInfo interactable in registeredInteractables)
                 {
-                    stageInfo.interactableCategories.AddCard((int)interactable.category, interactable.directorCard);
+                    if (interactable.scenes.Contains(SceneManager.GetActiveScene().name))
+                    {
+                        stageInfo.interactableCategories.AddCard((int)interactable.category, interactable.directorCard);
+                    }
                 }
                 
             }
             orig(self);
         }
 
-        public static void Add(InteractableTemplate interactable)
+        private static List<string> GetSceneNames(Stages scenes)
+        {
+            var names = new List<string>();
+
+            foreach( var scene in SceneNames)
+            {
+                if (scenes.HasFlag(scene.Key)) names.Add(scene.Value);
+            }
+
+            return names;
+        }
+
+        public static void AddToStages(InteractableTemplate interactable, Stages stages)
+        {
+            var sceneNames = GetSceneNames(stages);
+
+            var spawnCard = GenerateSpawnCard(interactable);
+            var interactableDirectorCard = GenerateDirectorCard(interactable, spawnCard);
+
+            interactableInfo info = new interactableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames);
+
+            Prefabs.Add(interactable.interactablePrefab);
+
+            registeredInteractables.Add(info);
+        }
+
+        public static void AddToStages(InteractableTemplate interactable, List<string> sceneNames)
+        {
+            var spawnCard = GenerateSpawnCard(interactable);
+            var interactableDirectorCard = GenerateDirectorCard(interactable, spawnCard);
+
+            interactableInfo info = new interactableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames);
+
+            Prefabs.Add(interactable.interactablePrefab);
+
+            registeredInteractables.Add(info);
+        }
+
+        public static void AddToStage(InteractableTemplate interactable, string sceneName)
+        {
+            var sceneNames = new List<string>();
+
+            sceneNames.Add(sceneName);
+
+
+            var spawnCard = GenerateSpawnCard(interactable);
+            var interactableDirectorCard = GenerateDirectorCard(interactable, spawnCard);
+
+
+            interactableInfo info = new interactableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames);
+
+            Prefabs.Add(interactable.interactablePrefab);
+
+            registeredInteractables.Add(info);
+        }
+
+        public static InteractableSpawnCard GenerateSpawnCard(InteractableTemplate interactable)
         {
             var interactableSpawnCard = ScriptableObject.CreateInstance<InteractableSpawnCard>();
             interactableSpawnCard.prefab = interactable.interactablePrefab;
@@ -85,9 +188,14 @@ namespace BetterAPI
             interactableSpawnCard.slightlyRandomizeOrientation = interactable.slightlyRandomizeOrientation;
             interactableSpawnCard.skipSpawnWhenSacrificeArtifactEnabled = interactable.skipSpawnWhenSacrificeArtifactEnabled;
 
+            return interactableSpawnCard;
+        }
+
+        public static DirectorCard GenerateDirectorCard(InteractableTemplate interactable, SpawnCard spawnCard)
+        {
             var interactableDirectorCard = new DirectorCard();
 
-            interactableDirectorCard.spawnCard = interactableSpawnCard;
+            interactableDirectorCard.spawnCard = spawnCard;
             interactableDirectorCard.selectionWeight = interactable.selectionWeight;
             interactableDirectorCard.spawnDistance = interactable.spawnDistance;
             interactableDirectorCard.allowAmbushSpawn = interactable.allowAmbushSpawn;
@@ -101,16 +209,20 @@ namespace BetterAPI
             Prefabs.Add(interactable.interactablePrefab);
 
             registeredInteractables.Add(info);
+            return interactableDirectorCard;
         }
+
 
         private class interactableInfo
         {
             public DirectorCard directorCard;
-            public category category;
-            public interactableInfo(DirectorCard directorCard ,category category)
+            public Category category;
+            public List<string> scenes;
+            public interactableInfo(DirectorCard directorCard, Category category, List<string> scenes)
             {
                 this.directorCard = directorCard;
                 this.category = category;
+                this.scenes = scenes;
             }
         }
 
@@ -118,7 +230,7 @@ namespace BetterAPI
         public class InteractableTemplate
         {
             public GameObject interactablePrefab;
-            public category interactableCategory;
+            public Category interactableCategory;
             public int selectionWeight;
             public bool sendOverNetwork;
             public HullClassification hullSize;
@@ -159,7 +271,7 @@ namespace BetterAPI
                 this.skipSpawnWhenSacrificeArtifactEnabled = false;
             }
 
-            public InteractableTemplate(GameObject interactablePrefab, category interactableCategory, int selectionWeight = 3, bool sendOverNetwork = true, HullClassification hullSize = HullClassification.Golem, MapNodeGroup.GraphType nodeGraphType = MapNodeGroup.GraphType.Ground, int directorCreditCost = 15, bool occupyPosition = true, SpawnCard.EliteRules eliteRules = SpawnCard.EliteRules.Default, bool orientToFloor = true, bool slightlyRandomizeOrientation = false, bool skipSpawnWhenSacrificeArtifactEnabled = false, NodeFlags requiredFlags = NodeFlags.None, NodeFlags forbiddenFlags = NodeFlags.None, DirectorCore.MonsterSpawnDistance spawnDistance = DirectorCore.MonsterSpawnDistance.Standard, bool allowAmbushSpawn = true, bool preventOverhead = false, int minimumStageCompletions = 0, UnlockableDef requiredUnlockableDef = null, UnlockableDef forbiddenUnlockableDef = null)
+            public InteractableTemplate(GameObject interactablePrefab, Category interactableCategory, int selectionWeight = 3, bool sendOverNetwork = true, HullClassification hullSize = HullClassification.Golem, MapNodeGroup.GraphType nodeGraphType = MapNodeGroup.GraphType.Ground, int directorCreditCost = 15, bool occupyPosition = true, SpawnCard.EliteRules eliteRules = SpawnCard.EliteRules.Default, bool orientToFloor = true, bool slightlyRandomizeOrientation = false, bool skipSpawnWhenSacrificeArtifactEnabled = false, NodeFlags requiredFlags = NodeFlags.None, NodeFlags forbiddenFlags = NodeFlags.None, DirectorCore.MonsterSpawnDistance spawnDistance = DirectorCore.MonsterSpawnDistance.Standard, bool allowAmbushSpawn = true, bool preventOverhead = false, int minimumStageCompletions = 0, UnlockableDef requiredUnlockableDef = null, UnlockableDef forbiddenUnlockableDef = null)
             {
                 this.interactablePrefab = interactablePrefab;
                 this.interactableCategory = interactableCategory;

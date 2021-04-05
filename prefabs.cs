@@ -9,13 +9,17 @@ namespace BetterAPI
     public class Prefabs
     {
         internal static List<GameObject> prefabs;
+
         static Prefabs()
         {
             prefabs = new List<GameObject>();
         }
         public static void Add(GameObject prefab)
         {
-            prefabs.Add(prefab);
+            if (!prefabs.Contains(prefab))
+            {
+                prefabs.Add(prefab);
+            }
         }
 
     }
