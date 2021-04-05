@@ -10,6 +10,7 @@ namespace BetterAPI
 {
     public class Interactables
     {
+        public static RoR2.TemporaryVisualEffect myTempEffect;
         public enum category
         { 
             Chests,
@@ -26,6 +27,32 @@ namespace BetterAPI
         static Interactables()
         {
             On.RoR2.SceneDirector.Start += SceneDirector_Start;
+            On.RoR2.SceneDirector.GenerateInteractableCardSelection += SceneDirector_GenerateInteractableCardSelection; ;
+            On.RoR2.CharacterBody.UpdateAllTemporaryVisualEffects += CharacterBody_UpdateAllTemporaryVisualEffects; ;
+        }
+
+        private static void CharacterBody_UpdateAllTemporaryVisualEffects(On.RoR2.CharacterBody.orig_UpdateAllTemporaryVisualEffects orig, CharacterBody self)
+        {
+
+            orig(self);
+            self.UpdateSingleTemporaryVisualEffect(ref myTempEffect, "Prefabs/TemporaryVisualEffects/BucklerDefense", self.radius, true, "");
+        }
+
+        private static WeightedSelection<DirectorCard> SceneDirector_GenerateInteractableCardSelection(On.RoR2.SceneDirector.orig_GenerateInteractableCardSelection orig, SceneDirector self)
+        {
+            if (ClassicStageInfo.instance && ClassicStageInfo.instance.interactableCategories)
+            {
+                foreach (var cat in ClassicStageInfo.instance.interactableCategories.categories)
+                {
+                    BetterAPI.print($"{cat.name} - {cat.selectionWeight}");
+                    foreach (var card in cat.cards)
+                    {
+                        BetterAPI.print($"{ card.spawnCard.name} - {card.selectionWeight}");
+                    }
+                }
+            }
+
+            return orig(self);
         }
 
         private static void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
@@ -74,7 +101,6 @@ namespace BetterAPI
             Prefabs.Add(interactable.interactablePrefab);
 
             registeredInteractables.Add(info);
-
         }
 
         private class interactableInfo
@@ -157,6 +183,5 @@ namespace BetterAPI
                 this.forbiddenUnlockableDef = forbiddenUnlockableDef;
             }
         }
-
     }
 }
