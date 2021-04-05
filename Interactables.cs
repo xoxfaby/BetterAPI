@@ -50,25 +50,25 @@ namespace BetterAPI
             Default = AbandonedAqueduct | AbyssalDepths | DistantRoost | RallypointDelta | ScorchedAcres | SirensCall | SkyMeadow | SunderedGrove | TitanicPlains | WetlandAspect
         }
 
-        public static Dictionary<Stages, string> SceneNames = new Dictionary<Stages, string>()
+        public static Dictionary<Stages, List<string>> SceneNames = new Dictionary<Stages, List<string>>()
         {
-            { Stages.TitanicPlains, "golemplains" },
-            { Stages.DistantRoost, "blackbeach" },
-            { Stages.WetlandAspect, "foggyswamp" },
-            { Stages.AbandonedAqueduct, "goolake" },
-            { Stages.RallypointDelta, "frozenwall" },
-            { Stages.ScorchedAcres, "wispgraveyard" },
-            { Stages.AbyssalDepths, "dampcavesimple" },
-            { Stages.SirensCall, "shipgraveyard" },
-            { Stages.GildedCoast, "goldshores" },
-            { Stages.MomentFractured, "mysteryspace" },
-            { Stages.Bazaar, "bazaar" },
-            { Stages.VoidCell, "arena" },
-            { Stages.MomentWhole, "limbo" },
-            { Stages.SkyMeadow, "skymeadow" },
-            { Stages.BullwarksAmbry, "artifactworld" },
-            { Stages.Commencement, "moon" },
-            { Stages.SunderedGrove, "rootjungle" }
+            { Stages.TitanicPlains, new List<string>(){ "golemplains", "golemplains2", "golemplains trailer" } },
+            { Stages.DistantRoost, new List<string>(){ "blackbeach", "blackbeach2", "blackbeachTest" } },
+            { Stages.WetlandAspect, new List<string>(){ "foggyswamp" } },
+            { Stages.AbandonedAqueduct, new List<string>(){ "goolake" } },
+            { Stages.RallypointDelta, new List<string>(){ "frozenwall" } },
+            { Stages.ScorchedAcres, new List<string>(){ "wispgraveyard" } },
+            { Stages.AbyssalDepths, new List<string>(){ "dampcavesimple" } },
+            { Stages.SirensCall, new List<string>(){ "shipgraveyard" } },
+            { Stages.GildedCoast, new List<string>(){ "goldshores" } },
+            { Stages.MomentFractured, new List<string>(){ "mysteryspace" } },
+            { Stages.Bazaar, new List<string>(){ "bazaar" } },
+            { Stages.VoidCell, new List<string>(){ "arena" } },
+            { Stages.MomentWhole, new List<string>(){ "limbo" } },
+            { Stages.SkyMeadow, new List<string>(){ "skymeadow" } },
+            { Stages.BullwarksAmbry, new List<string>(){ "artifactworld" } },
+            { Stages.Commencement, new List<string>(){ "moon", "moon2" } },
+            { Stages.SunderedGrove, new List<string>(){ "rootjungle" } }
         };
 
         private static List<interactableInfo> registeredInteractables = new List<interactableInfo>();
@@ -111,8 +111,10 @@ namespace BetterAPI
                 ClassicStageInfo stageInfo = SceneInfo.instance.GetComponent<ClassicStageInfo>();
                 foreach(interactableInfo interactable in registeredInteractables)
                 {
+                    Debug.Log("Trying to add " + interactable.directorCard.spawnCard.prefab.name + " to " + SceneManager.GetActiveScene().name);
                     if (interactable.scenes.Contains(SceneManager.GetActiveScene().name))
                     {
+                        Debug.Log("Succeeded!");
                         stageInfo.interactableCategories.AddCard((int)interactable.category, interactable.directorCard);
                     }
                 }
@@ -127,7 +129,12 @@ namespace BetterAPI
 
             foreach( var scene in SceneNames)
             {
-                if (scenes.HasFlag(scene.Key)) names.Add(scene.Value);
+                if (scenes.HasFlag(scene.Key)) {
+                    foreach (var name in scene.Value)
+                    {
+                        names.Add(name);
+                    }
+                }
             }
 
             return names;
