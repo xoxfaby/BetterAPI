@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using RoR2;
 using BepInEx;
-using UnityEngine;
-using System.Reflection;
 
 namespace BetterAPI
 {
     [BepInPlugin("com.xoxfaby.BetterAPI", "BetterAPI", "1.1.2.1")]
     public class BetterAPI : BaseUnityPlugin
     {
+            
         public void Awake()
         {
             On.RoR2.ContentManager.SetContentPacks += ContentManager_SetContentPacks;
