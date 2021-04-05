@@ -16,6 +16,7 @@ namespace BetterAPI
             On.RoR2.ContentManager.SetContentPacks += ContentManager_SetContentPacks;
         }
 
+
         public void Start()
         {
             Items.ApplyCustomItemDisplayRules();
@@ -26,6 +27,8 @@ namespace BetterAPI
             ContentPack contentPack = new ContentPack();
             contentPack.buffDefs = Buffs.buffDefs.ToArray();
             contentPack.itemDefs = Items.itemDefs.ToArray();
+            contentPack.networkedObjectPrefabs = Prefabs.prefabs.ToArray();
+
             newContentPacks.Add(contentPack);
             orig(newContentPacks);
         }

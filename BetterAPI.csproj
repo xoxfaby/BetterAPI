@@ -1,37 +1,37 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>BetterAPI</AssemblyName>
     <RootNamespace>BetterAPI</RootNamespace>
   </PropertyGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy &quot;$(TargetPath)&quot; &quot;D:\SteamBackup\steamapps\common\Risk of Rain 2\BepInEx\plugins&quot; /Y" />
+  </Target>
+
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\Libs\Assembly-CSharp.dll</HintPath>
+      <HintPath>D:\Mod Workspace\RoR2Libs\RoR2Libs\Publicized\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx">
-      <HintPath>..\Libs\BepInEx.dll</HintPath>
+      <HintPath>D:\Mod Workspace\RoR2Libs\RoR2Libs\BepInEx\BepInEx.dll</HintPath>
     </Reference>
     <Reference Include="MMHOOK_Assembly-CSharp">
-      <HintPath>..\Libs\MMHOOK_Assembly-CSharp.dll</HintPath>
+      <HintPath>D:\Mod Workspace\RoR2Libs\RoR2Libs\Optional\MMHOOK_Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\Libs\UnityEngine.dll</HintPath>
+      <HintPath>D:\Mod Workspace\RoR2Libs\RoR2Libs\Managed\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>..\Libs\UnityEngine.AssetBundleModule.dll</HintPath>
+      <HintPath>D:\Mod Workspace\RoR2Libs\RoR2Libs\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\Libs\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>D:\Mod Workspace\RoR2Libs\RoR2Libs\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Networking">
-      <HintPath>..\Libs\UnityEngine.Networking.dll</HintPath>
+      <HintPath>D:\Mod Workspace\RoR2Libs\RoR2Libs\Managed\UnityEngine.Networking.dll</HintPath>
     </Reference>
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy /y &quot;$(TargetPath)&quot; &quot;G:\SteamLibrary\steamapps\common\Risk of Rain 2\BepInEx\plugins\BetterAPI\&quot;&#xD;&#xA;copy /y &quot;$(TargetPath)&quot; &quot;Thunderstore\$(TargetFileName)&quot;&#xD;&#xA;copy /y &quot;$(ProjectDir)Thunderstore\README.md&quot; &quot;$(ProjectDir)README.md&quot;&#xD;&#xA;del Thunderstore\thunder.zip&#xD;&#xA;tar -acf Thunderstore\thunder.zip -C Thunderstore\ $(TargetFileName) README.md icon.png manifest.json" />
-  </Target>
 
 </Project>
