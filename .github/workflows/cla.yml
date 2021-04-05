@@ -16,4 +16,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           allowlist: 'xoxfaby' 
-          url-to-cladocument: 'https://github.com/xoxfaby/MoreItems/blob/master/CLA.md'
+          url-to-cladocument: 'https://github.com/xoxfaby/BetterAPI/blob/master/CLA.md'
