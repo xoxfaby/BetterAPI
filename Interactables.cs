@@ -45,18 +45,18 @@ namespace BetterAPI
         public static void Add(InteractableTemplate interactable)
         {
             var interactableSpawnCard = ScriptableObject.CreateInstance<InteractableSpawnCard>();
-            interactableSpawnCard.prefab = interactable.spawnCard.interactablePrefab;
-            interactableSpawnCard.sendOverNetwork = interactable.spawnCard.sendOverNetwork;
-            interactableSpawnCard.hullSize = interactable.spawnCard.hullSize;
-            interactableSpawnCard.nodeGraphType = interactable.spawnCard.nodeGraphType;
-            interactableSpawnCard.requiredFlags = interactable.spawnCard.requiredFlags;
-            interactableSpawnCard.forbiddenFlags = interactable.spawnCard.forbiddenFlags;
-            interactableSpawnCard.directorCreditCost = interactable.spawnCard.directorCreditCost;
-            interactableSpawnCard.occupyPosition = interactable.spawnCard.occupyPosition;
-            interactableSpawnCard.eliteRules = interactable.spawnCard.eliteRules;
-            interactableSpawnCard.orientToFloor = interactable.spawnCard.orientToFloor;
-            interactableSpawnCard.slightlyRandomizeOrientation = interactable.spawnCard.slightlyRandomizeOrientation;
-            interactableSpawnCard.skipSpawnWhenSacrificeArtifactEnabled = interactable.spawnCard.skipSpawnWhenSacrificeArtifactEnabled;
+            interactableSpawnCard.prefab = interactable.interactablePrefab;
+            interactableSpawnCard.sendOverNetwork = interactable.sendOverNetwork;
+            interactableSpawnCard.hullSize = interactable.hullSize;
+            interactableSpawnCard.nodeGraphType = interactable.nodeGraphType;
+            interactableSpawnCard.requiredFlags = interactable.requiredFlags;
+            interactableSpawnCard.forbiddenFlags = interactable.forbiddenFlags;
+            interactableSpawnCard.directorCreditCost = interactable.directorCreditCost;
+            interactableSpawnCard.occupyPosition = interactable.occupyPosition;
+            interactableSpawnCard.eliteRules = interactable.eliteRules;
+            interactableSpawnCard.orientToFloor = interactable.orientToFloor;
+            interactableSpawnCard.slightlyRandomizeOrientation = interactable.slightlyRandomizeOrientation;
+            interactableSpawnCard.skipSpawnWhenSacrificeArtifactEnabled = interactable.skipSpawnWhenSacrificeArtifactEnabled;
 
             var interactableDirectorCard = new DirectorCard();
 
@@ -71,7 +71,7 @@ namespace BetterAPI
 
             interactableInfo info = new interactableInfo(interactableDirectorCard, interactable.interactableCategory);
 
-            Prefabs.Add(interactable.spawnCard.interactablePrefab);
+            Prefabs.Add(interactable.interactablePrefab);
 
             registeredInteractables.Add(info);
 
@@ -89,23 +89,37 @@ namespace BetterAPI
         }
 
 
-        public class SpawnCardTemplate
+        public class InteractableTemplate
         {
             public GameObject interactablePrefab;
+            public category interactableCategory;
+            public int selectionWeight;
             public bool sendOverNetwork;
             public HullClassification hullSize;
             public MapNodeGroup.GraphType nodeGraphType;
-            public NodeFlags requiredFlags;
-            public NodeFlags forbiddenFlags;
             public int directorCreditCost;
             public bool occupyPosition;
             public SpawnCard.EliteRules eliteRules;
             public bool orientToFloor;
             public bool slightlyRandomizeOrientation;
             public bool skipSpawnWhenSacrificeArtifactEnabled;
+            public NodeFlags requiredFlags;
+            public NodeFlags forbiddenFlags;
+            public DirectorCore.MonsterSpawnDistance spawnDistance;
+            public bool allowAmbushSpawn;
+            public bool preventOverhead;
+            public int minimumStageCompletions;
+            public UnlockableDef requiredUnlockableDef;
+            public UnlockableDef forbiddenUnlockableDef;
+            
 
-            public SpawnCardTemplate()
+            public InteractableTemplate()
             {
+                this.selectionWeight = 3;
+                this.spawnDistance = DirectorCore.MonsterSpawnDistance.Standard;
+                this.allowAmbushSpawn = true;
+                this.preventOverhead = false;
+                this.minimumStageCompletions = 0;
                 this.sendOverNetwork = true;
                 this.hullSize = HullClassification.Golem;
                 this.nodeGraphType = MapNodeGroup.GraphType.Ground;
@@ -118,27 +132,29 @@ namespace BetterAPI
                 this.slightlyRandomizeOrientation = false;
                 this.skipSpawnWhenSacrificeArtifactEnabled = false;
             }
-        }
 
-        public class InteractableTemplate
-        {
-            public SpawnCardTemplate spawnCard;
-            public int selectionWeight;
-            public DirectorCore.MonsterSpawnDistance spawnDistance;
-            public bool allowAmbushSpawn;
-            public bool preventOverhead;
-            public int minimumStageCompletions;
-            public UnlockableDef requiredUnlockableDef;
-            public UnlockableDef forbiddenUnlockableDef;
-            public category interactableCategory;
-
-            public InteractableTemplate()
+            public InteractableTemplate(GameObject interactablePrefab, category interactableCategory, int selectionWeight = 3, bool sendOverNetwork = true, HullClassification hullSize = HullClassification.Golem, MapNodeGroup.GraphType nodeGraphType = MapNodeGroup.GraphType.Ground, int directorCreditCost = 15, bool occupyPosition = true, SpawnCard.EliteRules eliteRules = SpawnCard.EliteRules.Default, bool orientToFloor = true, bool slightlyRandomizeOrientation = false, bool skipSpawnWhenSacrificeArtifactEnabled = false, NodeFlags requiredFlags = NodeFlags.None, NodeFlags forbiddenFlags = NodeFlags.None, DirectorCore.MonsterSpawnDistance spawnDistance = DirectorCore.MonsterSpawnDistance.Standard, bool allowAmbushSpawn = true, bool preventOverhead = false, int minimumStageCompletions = 0, UnlockableDef requiredUnlockableDef = null, UnlockableDef forbiddenUnlockableDef = null)
             {
-                this.selectionWeight = 3;
-                this.spawnDistance = DirectorCore.MonsterSpawnDistance.Standard;
-                this.allowAmbushSpawn = true;
-                this.preventOverhead = false;
-                this.minimumStageCompletions = 0;
+                this.interactablePrefab = interactablePrefab;
+                this.interactableCategory = interactableCategory;
+                this.selectionWeight = selectionWeight;
+                this.sendOverNetwork = sendOverNetwork;
+                this.hullSize = hullSize;
+                this.nodeGraphType = nodeGraphType;
+                this.directorCreditCost = directorCreditCost;
+                this.occupyPosition = occupyPosition;
+                this.eliteRules = eliteRules;
+                this.orientToFloor = orientToFloor;
+                this.slightlyRandomizeOrientation = slightlyRandomizeOrientation;
+                this.skipSpawnWhenSacrificeArtifactEnabled = skipSpawnWhenSacrificeArtifactEnabled;
+                this.requiredFlags = requiredFlags;
+                this.forbiddenFlags = forbiddenFlags;
+                this.spawnDistance = spawnDistance;
+                this.allowAmbushSpawn = allowAmbushSpawn;
+                this.preventOverhead = preventOverhead;
+                this.minimumStageCompletions = minimumStageCompletions;
+                this.requiredUnlockableDef = requiredUnlockableDef;
+                this.forbiddenUnlockableDef = forbiddenUnlockableDef;
             }
         }
 
