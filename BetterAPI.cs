@@ -28,6 +28,7 @@ namespace BetterAPI
             contentPack.buffDefs = Buffs.buffDefs.ToArray();
             contentPack.itemDefs = Items.itemDefs.ToArray();
             contentPack.networkedObjectPrefabs = Prefabs.prefabs.ToArray();
+            contentPack.bodyPrefabs = Bodies.prefabs.ToArray();
 
             newContentPacks.Add(contentPack);
             orig(newContentPacks);
