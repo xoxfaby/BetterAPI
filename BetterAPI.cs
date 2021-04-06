@@ -33,7 +33,7 @@ namespace BetterAPI
             contentPack.projectilePrefabs = ProjectilePrefabs.prefabs.ToArray();
 
             newContentPacks.Add(contentPack);
-            orig(newContentPacks);
+            orig(newContentPacks);  
         }
     }
 }

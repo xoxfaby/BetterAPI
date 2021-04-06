@@ -216,11 +216,6 @@ namespace BetterAPI
             interactableDirectorCard.requiredUnlockableDef = interactable.requiredUnlockableDef;
             interactableDirectorCard.forbiddenUnlockableDef = interactable.forbiddenUnlockableDef;
 
-            interactableInfo info = new interactableInfo(interactableDirectorCard, interactable.interactableCategory);
-
-            Prefabs.Add(interactable.interactablePrefab);
-
-            registeredInteractables.Add(info);
             return interactableDirectorCard;
         }
 
