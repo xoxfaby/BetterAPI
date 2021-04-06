@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using RoR2;
 using BepInEx;
+using UnityEngine;
 
 namespace BetterAPI
 {
@@ -23,10 +24,13 @@ namespace BetterAPI
         private static void ContentManager_SetContentPacks(On.RoR2.ContentManager.orig_SetContentPacks orig, List<ContentPack> newContentPacks)
         {
             ContentPack contentPack = new ContentPack();
+
             contentPack.buffDefs = Buffs.buffDefs.ToArray();
             contentPack.itemDefs = Items.itemDefs.ToArray();
-            contentPack.networkedObjectPrefabs = Prefabs.prefabs.ToArray();
-            contentPack.bodyPrefabs = Bodies.prefabs.ToArray();
+            contentPack.networkedObjectPrefabs = NetworkedPrefabs.prefabs.ToArray();
+            contentPack.bodyPrefabs = BodyPrefabs.prefabs.ToArray();
+            contentPack.masterPrefabs = MasterPrefabs.prefabs.ToArray();
+            contentPack.projectilePrefabs = ProjectilePrefabs.prefabs.ToArray();
 
             newContentPacks.Add(contentPack);
             orig(newContentPacks);

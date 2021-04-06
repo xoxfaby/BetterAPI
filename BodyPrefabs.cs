@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace BetterAPI
 {
-    public class Bodies
+    public class BodyPrefabs
     {
         internal static List<GameObject> prefabs;
 
-        static Bodies()
+        static BodyPrefabs()
         {
             prefabs = new List<GameObject>();
         }
