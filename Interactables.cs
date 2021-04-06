@@ -140,33 +140,37 @@ namespace BetterAPI
             return names;
         }
 
-        public static void AddToStages(InteractableTemplate interactable, Stages stages)
+        public static interactableInfo AddToStages(InteractableTemplate interactable, Stages stages)
         {
             var sceneNames = GetSceneNames(stages);
 
             var spawnCard = GenerateSpawnCard(interactable);
             var interactableDirectorCard = GenerateDirectorCard(interactable, spawnCard);
 
-            interactableInfo info = new interactableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames);
+            interactableInfo info = new interactableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames, interactable);
 
             NetworkedPrefabs.Add(interactable.interactablePrefab);
 
             registeredInteractables.Add(info);
+
+            return info;
         }
 
-        public static void AddToStages(InteractableTemplate interactable, List<string> sceneNames)
+        public static interactableInfo AddToStages(InteractableTemplate interactable, List<string> sceneNames)
         {
             var spawnCard = GenerateSpawnCard(interactable);
             var interactableDirectorCard = GenerateDirectorCard(interactable, spawnCard);
 
-            interactableInfo info = new interactableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames);
+            interactableInfo info = new interactableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames, interactable);
 
             NetworkedPrefabs.Add(interactable.interactablePrefab);
 
             registeredInteractables.Add(info);
+
+            return info;
         }
 
-        public static void AddToStage(InteractableTemplate interactable, string sceneName)
+        public static interactableInfo AddToStage(InteractableTemplate interactable, string sceneName)
         {
             var sceneNames = new List<string>();
 
@@ -177,11 +181,13 @@ namespace BetterAPI
             var interactableDirectorCard = GenerateDirectorCard(interactable, spawnCard);
 
 
-            interactableInfo info = new interactableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames);
+            interactableInfo info = new interactableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames, interactable);
 
             NetworkedPrefabs.Add(interactable.interactablePrefab);
 
             registeredInteractables.Add(info);
+
+            return info;
         }
 
         public static InteractableSpawnCard GenerateSpawnCard(InteractableTemplate interactable)
@@ -220,16 +226,18 @@ namespace BetterAPI
         }
 
 
-        private class interactableInfo
+        public class interactableInfo
         {
             public DirectorCard directorCard;
             public Category category;
             public List<string> scenes;
-            public interactableInfo(DirectorCard directorCard, Category category, List<string> scenes)
+            public InteractableTemplate template;
+            public interactableInfo(DirectorCard directorCard, Category category, List<string> scenes, InteractableTemplate template)
             {
                 this.directorCard = directorCard;
                 this.category = category;
                 this.scenes = scenes;
+                this.template = template;
             }
         }
 
