@@ -3,37 +3,58 @@ using System.Collections.Generic;
 using RoR2;
 using BepInEx;
 using UnityEngine;
+using RoR2.ContentManagement;
+using System.Collections;
 
 namespace BetterAPI
 {
     [BepInPlugin("com.xoxfaby.BetterAPI", "BetterAPI", "1.2.0.1")]
     public class BetterAPI : BaseUnityPlugin
     {
-            
-        public void Awake()
+        internal class BetterAPIContentPackProvider : IContentPackProvider
         {
-            On.RoR2.ContentManager.SetContentPacks += ContentManager_SetContentPacks;
+            internal ContentPack contentPack = new ContentPack();
+            public string identifier => "com.xoxfaby.BetterAPI";
+
+            public IEnumerator LoadStaticContentAsync(LoadStaticContentAsyncArgs args)
+            {
+                this.contentPack.identifier = this.identifier;
+                contentPack.buffDefs.Add(Buffs.buffDefs.ToArray());
+                contentPack.itemDefs.Add(Items.itemDefs.ToArray());
+                contentPack.networkedObjectPrefabs.Add(Prefabs.prefabs.ToArray());
+                contentPack.bodyPrefabs.Add(Bodies.prefabs.ToArray());
+
+                args.ReportProgress(1f);
+                yield break;
+            }
+
+            public IEnumerator GenerateContentPackAsync(GetContentPackAsyncArgs args)
+            {
+                ContentPack.Copy(this.contentPack, args.output);
+                args.ReportProgress(1f);
+                yield break;
+            }
+
+            public IEnumerator FinalizeAsync(FinalizeAsyncArgs args)
+            {
+                args.ReportProgress(1f);
+                yield break;
+            }
         }
 
-
+        public void Awake()
+        {
+            RoR2.ContentManagement.ContentManager.collectContentPackProviders += ContentManager_collectContentPackProviders;
+        }
         public void Start()
         {
             Items.ApplyCustomItemDisplayRules();
         }
 
-        private static void ContentManager_SetContentPacks(On.RoR2.ContentManager.orig_SetContentPacks orig, List<ContentPack> newContentPacks)
+        private void ContentManager_collectContentPackProviders(RoR2.ContentManagement.ContentManager.AddContentPackProviderDelegate addContentPackProvider)
         {
-            ContentPack contentPack = new ContentPack();
-
-            contentPack.buffDefs = Buffs.buffDefs.ToArray();
-            contentPack.itemDefs = Items.itemDefs.ToArray();
-            contentPack.networkedObjectPrefabs = NetworkedPrefabs.prefabs.ToArray();
-            contentPack.bodyPrefabs = BodyPrefabs.prefabs.ToArray();
-            contentPack.masterPrefabs = MasterPrefabs.prefabs.ToArray();
-            contentPack.projectilePrefabs = ProjectilePrefabs.prefabs.ToArray();
-
-            newContentPacks.Add(contentPack);
-            orig(newContentPacks);  
+            addContentPackProvider(new BetterAPIContentPackProvider());
         }
+
     }
 }
