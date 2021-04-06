@@ -71,7 +71,7 @@ namespace BetterAPI
             { Stages.SunderedGrove, new List<string>(){ "rootjungle" } }
         };
 
-        private static List<interactableInfo> registeredInteractables = new List<interactableInfo>();
+        private static List<InteractableInfo> registeredInteractables = new List<InteractableInfo>();
 
         static Interactables()
         {
@@ -109,7 +109,7 @@ namespace BetterAPI
             if (NetworkServer.active)
             {
                 ClassicStageInfo stageInfo = SceneInfo.instance.GetComponent<ClassicStageInfo>();
-                foreach(interactableInfo interactable in registeredInteractables)
+                foreach(InteractableInfo interactable in registeredInteractables)
                 {
                     Debug.Log("Trying to add " + interactable.directorCard.spawnCard.prefab.name + " to " + SceneManager.GetActiveScene().name);
                     if (interactable.scenes.Contains(SceneManager.GetActiveScene().name))
@@ -140,14 +140,14 @@ namespace BetterAPI
             return names;
         }
 
-        public static interactableInfo AddToStages(InteractableTemplate interactable, Stages stages)
+        public static InteractableInfo AddToStages(InteractableTemplate interactable, Stages stages)
         {
             var sceneNames = GetSceneNames(stages);
 
             var spawnCard = GenerateSpawnCard(interactable);
             var interactableDirectorCard = GenerateDirectorCard(interactable, spawnCard);
 
-            interactableInfo info = new interactableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames, interactable);
+            InteractableInfo info = new InteractableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames, interactable);
 
             NetworkedPrefabs.Add(interactable.interactablePrefab);
 
@@ -156,12 +156,12 @@ namespace BetterAPI
             return info;
         }
 
-        public static interactableInfo AddToStages(InteractableTemplate interactable, List<string> sceneNames)
+        public static InteractableInfo AddToStages(InteractableTemplate interactable, List<string> sceneNames)
         {
             var spawnCard = GenerateSpawnCard(interactable);
             var interactableDirectorCard = GenerateDirectorCard(interactable, spawnCard);
 
-            interactableInfo info = new interactableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames, interactable);
+            InteractableInfo info = new InteractableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames, interactable);
 
             NetworkedPrefabs.Add(interactable.interactablePrefab);
 
@@ -170,7 +170,7 @@ namespace BetterAPI
             return info;
         }
 
-        public static interactableInfo AddToStage(InteractableTemplate interactable, string sceneName)
+        public static InteractableInfo AddToStage(InteractableTemplate interactable, string sceneName)
         {
             var sceneNames = new List<string>();
 
@@ -181,7 +181,7 @@ namespace BetterAPI
             var interactableDirectorCard = GenerateDirectorCard(interactable, spawnCard);
 
 
-            interactableInfo info = new interactableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames, interactable);
+            InteractableInfo info = new InteractableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames, interactable);
 
             NetworkedPrefabs.Add(interactable.interactablePrefab);
 
@@ -226,13 +226,13 @@ namespace BetterAPI
         }
 
 
-        public class interactableInfo
+        public class InteractableInfo
         {
             public DirectorCard directorCard;
             public Category category;
             public List<string> scenes;
             public InteractableTemplate template;
-            public interactableInfo(DirectorCard directorCard, Category category, List<string> scenes, InteractableTemplate template)
+            public InteractableInfo(DirectorCard directorCard, Category category, List<string> scenes, InteractableTemplate template)
             {
                 this.directorCard = directorCard;
                 this.category = category;
