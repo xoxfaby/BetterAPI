@@ -6,16 +6,14 @@ using UnityEngine;
 
 namespace BetterAPI
 {
-    public class Prefabs
+    public class Utils
     {
-        internal static List<GameObject> prefabs;
 
         internal static Lazy<GameObject> _prefabParent;
         internal static GameObject prefabParent { get { return _prefabParent.Value; } }
 
-        static Prefabs()
+        static Utils()
         {
-            prefabs = new List<GameObject>();
             _prefabParent = new Lazy<GameObject>(() =>
             {
                 var prefab = new GameObject("CustomPrefabs");
@@ -30,19 +28,10 @@ namespace BetterAPI
             });
         }
 
-        public static GameObject FromGameObject(GameObject gameObject)
+        public static GameObject PrefabFromGameObject(GameObject gameObject)
         {
             var prefab = UnityEngine.Object.Instantiate(gameObject, prefabParent.transform);
-            Add(prefab);
             return prefab;
-        }
-
-        public static void Add(GameObject prefab)
-        {
-            if (!prefabs.Contains(prefab))
-            {
-                prefabs.Add(prefab);
-            }
         }
 
     }

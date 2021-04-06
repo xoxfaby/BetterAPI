@@ -149,7 +149,7 @@ namespace BetterAPI
 
             interactableInfo info = new interactableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames);
 
-            Prefabs.Add(interactable.interactablePrefab);
+            NetworkedPrefabs.Add(interactable.interactablePrefab);
 
             registeredInteractables.Add(info);
         }
@@ -161,7 +161,7 @@ namespace BetterAPI
 
             interactableInfo info = new interactableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames);
 
-            Prefabs.Add(interactable.interactablePrefab);
+            NetworkedPrefabs.Add(interactable.interactablePrefab);
 
             registeredInteractables.Add(info);
         }
@@ -179,7 +179,7 @@ namespace BetterAPI
 
             interactableInfo info = new interactableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames);
 
-            Prefabs.Add(interactable.interactablePrefab);
+            NetworkedPrefabs.Add(interactable.interactablePrefab);
 
             registeredInteractables.Add(info);
         }
