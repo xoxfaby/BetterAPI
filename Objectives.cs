@@ -61,7 +61,7 @@ namespace BetterAPI
 
         internal class ObjectiveTracker : ObjectivePanelController.ObjectiveTracker
         {
-            internal ObjectiveTracker()
+            public ObjectiveTracker()
             {
                 this.baseToken = (this.sourceDescriptor.source as ObjectiveInfo).baseToken;
             }
