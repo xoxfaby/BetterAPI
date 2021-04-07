@@ -5,9 +5,10 @@ using RoR2.UI;
 
 namespace BetterAPI
 {
-    class Objectives
+    public class Objectives
     {
         internal static List<ObjectiveInfo> objectives;
+        internal static List<ObjectivePanelController.ObjectiveSourceDescriptor> sourceDescriptorList;
         static Objectives()
         {
             objectives = new List<ObjectiveInfo>();
@@ -16,16 +17,18 @@ namespace BetterAPI
 
         private static void ObjectivePanelController_collectObjectiveSources(RoR2.CharacterMaster master, List<ObjectivePanelController.ObjectiveSourceDescriptor> list)
         {
-            foreach(var objective in objectives)
+            sourceDescriptorList = list;
+            foreach (var objective in objectives)
             {
                 if(objective.show)
                 {
-                    list.Add(new ObjectivePanelController.ObjectiveSourceDescriptor
+                    objective.sourceDescriptor = new ObjectivePanelController.ObjectiveSourceDescriptor
                     {
                         source = objective,
                         master = master,
                         objectiveType = typeof(ObjectiveTracker)
-                    });
+                    };
+                    list.Add(objective.sourceDescriptor);
                 }
             }
         }
@@ -37,14 +40,21 @@ namespace BetterAPI
             return objectiveInfo;
         }
 
+        public static void RemoveObjective(ObjectiveInfo objectiveInfo)
+        {
+            sourceDescriptorList.Remove(objectiveInfo.sourceDescriptor);
+            objectives.Remove(objectiveInfo);
+        }
+
         public class ObjectiveInfo : UnityEngine.Object
         {
             public bool show = false;
             public bool dirty = false;
             public string baseToken;
             private string _title;
+            public ObjectivePanelController.ObjectiveSourceDescriptor sourceDescriptor;
             public string title { 
-                get { return _title }
+                get { return _title; }
                 set {
                     dirty = true;
                     _title = value;
@@ -63,7 +73,7 @@ namespace BetterAPI
         {
             public ObjectiveTracker()
             {
-                this.baseToken = (this.sourceDescriptor.source as ObjectiveInfo).baseToken;
+                //this.baseToken = (this.sourceDescriptor.source as ObjectiveInfo).baseToken;
             }
             public override bool IsDirty()
             {
