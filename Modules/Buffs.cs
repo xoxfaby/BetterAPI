@@ -5,7 +5,7 @@ using RoR2;
 
 namespace BetterAPI
 {
-    public class Buffs
+    public static class Buffs
     {
         internal static List<BuffDef> buffDefs;
         static Buffs()

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace BetterAPI
 {
-    public class Utils
+    public static class Utils
     {
 
         internal static Lazy<GameObject> _prefabParent;

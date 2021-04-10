@@ -6,11 +6,10 @@ using UnityEngine;
 
 namespace BetterAPI
 {
-    public class NetworkedPrefabs
+    public static class MasterPrefabs
     {
         internal static List<GameObject> prefabs;
-
-        static NetworkedPrefabs()
+        static MasterPrefabs()
         {
             prefabs = new List<GameObject>();
         }

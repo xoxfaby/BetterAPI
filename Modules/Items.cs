@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace BetterAPI
 {
-    public class Items
+    public static class Items
     {
         internal readonly static List<ItemDef> itemDefs;
         internal readonly static Dictionary<String, Dictionary<UnityEngine.Object, ItemDisplayRule[]>> characterModelItemDisplayRulesDicts;

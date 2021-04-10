@@ -9,9 +9,8 @@ using UnityEngine.SceneManagement;
 
 namespace BetterAPI
 {
-    public class Interactables
+    public static class Interactables
     {
-        public static RoR2.TemporaryVisualEffect myTempEffect;
         public enum Category
         { 
             Chests,
@@ -47,6 +46,10 @@ namespace BetterAPI
             //Add new values before this point
             Last,
             All = (Last << 1) - 3,
+            Stage1 = TitanicPlains | DistantRoost,
+            Stage2 = WetlandAspect | AbandonedAqueduct,
+            Stage3 = RallypointDelta | ScorchedAcres,
+            Stage4 = AbyssalDepths | SirensCall,
             Default = AbandonedAqueduct | AbyssalDepths | DistantRoost | RallypointDelta | ScorchedAcres | SirensCall | SkyMeadow | SunderedGrove | TitanicPlains | WetlandAspect
         }
 
@@ -76,68 +79,6 @@ namespace BetterAPI
         static Interactables()
         {
             On.RoR2.SceneDirector.Start += SceneDirector_Start;
-            On.RoR2.SceneDirector.GenerateInteractableCardSelection += SceneDirector_GenerateInteractableCardSelection; ;
-            On.RoR2.CharacterBody.UpdateAllTemporaryVisualEffects += CharacterBody_UpdateAllTemporaryVisualEffects; ;
-        }
-
-        private static void CharacterBody_UpdateAllTemporaryVisualEffects(On.RoR2.CharacterBody.orig_UpdateAllTemporaryVisualEffects orig, CharacterBody self)
-        {
-
-            orig(self);
-            self.UpdateSingleTemporaryVisualEffect(ref myTempEffect, "Prefabs/TemporaryVisualEffects/BucklerDefense", self.radius, true, "");
-        }
-
-        private static WeightedSelection<DirectorCard> SceneDirector_GenerateInteractableCardSelection(On.RoR2.SceneDirector.orig_GenerateInteractableCardSelection orig, SceneDirector self)
-        {
-            if (ClassicStageInfo.instance && ClassicStageInfo.instance.interactableCategories)
-            {
-                foreach (var cat in ClassicStageInfo.instance.interactableCategories.categories)
-                {
-                    BetterAPI.print($"{cat.name} - {cat.selectionWeight}");
-                    foreach (var card in cat.cards)
-                    {
-                        BetterAPI.print($"{ card.spawnCard.name} - {card.selectionWeight}");
-                    }
-                }
-            }
-
-            return orig(self);
-        }
-
-        private static void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
-        {
-            if (NetworkServer.active)
-            {
-                ClassicStageInfo stageInfo = SceneInfo.instance.GetComponent<ClassicStageInfo>();
-                foreach(InteractableInfo interactable in registeredInteractables)
-                {
-                    Debug.Log("Trying to add " + interactable.directorCard.spawnCard.prefab.name + " to " + SceneManager.GetActiveScene().name);
-                    if (interactable.scenes.Contains(SceneManager.GetActiveScene().name))
-                    {
-                        Debug.Log("Succeeded!");
-                        stageInfo.interactableCategories.AddCard((int)interactable.category, interactable.directorCard);
-                    }
-                }
-                
-            }
-            orig(self);
-        }
-
-        private static List<string> GetSceneNames(Stages scenes)
-        {
-            var names = new List<string>();
-
-            foreach( var scene in SceneNames)
-            {
-                if (scenes.HasFlag(scene.Key)) {
-                    foreach (var name in scene.Value)
-                    {
-                        names.Add(name);
-                    }
-                }
-            }
-
-            return names;
         }
 
         public static InteractableInfo AddToStages(InteractableTemplate interactable, Stages stages)

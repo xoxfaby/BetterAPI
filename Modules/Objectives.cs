@@ -5,7 +5,7 @@ using RoR2.UI;
 
 namespace BetterAPI
 {
-    public class Objectives
+    public static class Objectives
     {
         internal static List<ObjectiveInfo> objectives;
         internal static List<ObjectivePanelController.ObjectiveSourceDescriptor> sourceDescriptorList;

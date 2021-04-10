@@ -19,6 +19,7 @@ namespace BetterAPI
         public void Start()
         {
             Items.ApplyCustomItemDisplayRules();
+            Interactables.SceneDirector_GenerateInteractableCardSelection();
         }
 
         private static void ContentManager_SetContentPacks(On.RoR2.ContentManager.orig_SetContentPacks orig, List<ContentPack> newContentPacks)

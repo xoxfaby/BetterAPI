@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BetterAPI
 {
-    public class Languages
+    public static class Languages
     {
         private static readonly Dictionary<String, Dictionary<String, String>> languages;
         static Languages()
