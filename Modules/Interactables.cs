@@ -81,6 +81,43 @@ namespace BetterAPI
             On.RoR2.SceneDirector.Start += SceneDirector_Start;
         }
 
+
+        private static void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
+        {
+            if (NetworkServer.active)
+            {
+                ClassicStageInfo stageInfo = SceneInfo.instance.GetComponent<ClassicStageInfo>();
+                foreach(InteractableInfo interactable in registeredInteractables)
+                {
+                    Debug.Log("Trying to add " + interactable.directorCard.spawnCard.prefab.name + " to " + SceneManager.GetActiveScene().name);
+                    if (interactable.scenes.Contains(SceneManager.GetActiveScene().name))
+                    {
+                        Debug.Log("Succeeded!");
+                        stageInfo.interactableCategories.AddCard((int)interactable.category, interactable.directorCard);
+                    }
+                }
+                
+            }
+            orig(self);
+        }
+
+        private static List<string> GetSceneNames(Stages scenes)
+        {
+            var names = new List<string>();
+
+            foreach( var scene in SceneNames)
+            {
+                if (scenes.HasFlag(scene.Key)) {
+                    foreach (var name in scene.Value)
+                    {
+                        names.Add(name);
+                    }
+                }
+            }
+
+            return names;
+        }
+
         public static InteractableInfo AddToStages(InteractableTemplate interactable, Stages stages)
         {
             var sceneNames = GetSceneNames(stages);
