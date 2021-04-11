@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using RoR2;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
@@ -10,20 +8,18 @@ namespace BetterAPI
     public static class Stats
     {
 
-        public static StatsEventHandler HealthMultiplier = new StatsEventHandler();
+        public static StatsEventHandler health = new StatsEventHandler();
+        public static StatsEventHandler shield = new StatsEventHandler();
+        public static StatsEventHandler damage = new StatsEventHandler();
+        public static StatsEventHandler armor = new StatsEventHandler();
+        public static StatsEventHandler speed = new StatsEventHandler();
+        public static StatsEventHandler sprintSpeed = new StatsEventHandler();
+        public static StatsEventHandler attackSpeed = new StatsEventHandler();
+        public static StatsEventHandler critChance = new StatsEventHandler();
+        public static StatsEventHandler jumps = new StatsEventHandler();
         static Stats()
         {
             IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
-        }
-
-        public static void Debug()
-        {
-            Stats.HealthMultiplier.getStatModifiers += HealthMultiplier_getStatModifiers;
-        }
-
-        private static void HealthMultiplier_getStatModifiers(object sender, Stats.StatsEventHandler.StatsEventArgs e)
-        {
-            e.stat *= 1000;
         }
 
         private static void CharacterBody_RecalculateStats(ILContext il)
@@ -39,22 +35,42 @@ namespace BetterAPI
             {
                 c.Emit(OpCodes.Ldloc, 50);
                 c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate<Func<CharacterBody,float>>((characterBody) => HealthMultiplier.getModifier(characterBody));
+                c.EmitDelegate<Func<CharacterBody,float>>((characterBody) => health.getMultiplier(characterBody));
                 c.Emit(OpCodes.Mul);
                 c.Emit(OpCodes.Stloc, 50);
             }
 
         }
 
+
         public class StatsEventHandler
         {
-            public event EventHandler<StatsEventArgs> getStatModifiers;
+            public delegate void StatsEvent(CharacterBody characterBody, StatsEventArgs e);
 
-            public float getModifier(CharacterBody characterBody)
+            public event StatsEvent collectMultipliers;
+            public event StatsEvent collectBonuses;
+
+            public float getMultiplier(CharacterBody characterBody)
             {
-                var eventArgs = new StatsEventArgs { stat = 1 };
-                getStatModifiers.Invoke(characterBody, eventArgs);
-                return eventArgs.stat;
+                if (collectMultipliers != null)
+                {
+                    var eventArgs = new StatsEventArgs { stat = 1f };
+                    collectMultipliers.Invoke(characterBody, eventArgs);
+                    return eventArgs.stat;
+                }
+                return 1f;
+                
+            }
+
+            public float getBonus(CharacterBody characterBody)
+            {
+                if (collectBonuses != null)
+                {
+                    var eventArgs = new StatsEventArgs { stat = 0f };
+                    collectBonuses.Invoke(characterBody, eventArgs);
+                    return eventArgs.stat;
+                }
+                return 0f;
             }
 
             public class StatsEventArgs
