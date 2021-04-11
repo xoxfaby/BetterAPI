@@ -47,8 +47,19 @@ namespace BetterAPI
         {
             public delegate void StatsEvent(CharacterBody characterBody, StatsEventArgs e);
 
-            public event StatsEvent collectMultipliers;
             public event StatsEvent collectBonuses;
+            public event StatsEvent collectMultipliers;
+
+            public float getBonus(CharacterBody characterBody)
+            {
+                if (collectBonuses != null)
+                {
+                    var eventArgs = new StatsEventArgs { stat = 0f };
+                    collectBonuses.Invoke(characterBody, eventArgs);
+                    return eventArgs.stat;
+                }
+                return 0f;
+            }
 
             public float getMultiplier(CharacterBody characterBody)
             {
@@ -60,17 +71,6 @@ namespace BetterAPI
                 }
                 return 1f;
                 
-            }
-
-            public float getBonus(CharacterBody characterBody)
-            {
-                if (collectBonuses != null)
-                {
-                    var eventArgs = new StatsEventArgs { stat = 0f };
-                    collectBonuses.Invoke(characterBody, eventArgs);
-                    return eventArgs.stat;
-                }
-                return 0f;
             }
 
             public class StatsEventArgs
