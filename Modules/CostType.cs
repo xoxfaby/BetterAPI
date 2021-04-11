@@ -31,6 +31,11 @@ namespace BetterAPI
             }
         }
 
+        public static int getCostTypeIndex(CostTypeDef costTypeDef)
+        {
+            return Array.IndexOf(RoR2.CostTypeCatalog.costTypeDefs, costTypeDef);
+        }
+
         public static void Add(CostTypeDef costTypeDef)
         {
             costTypeDefs.Add(costTypeDef);
