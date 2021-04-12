@@ -89,11 +89,13 @@ namespace BetterAPI
                 ClassicStageInfo stageInfo = SceneInfo.instance.GetComponent<ClassicStageInfo>();
                 foreach(InteractableInfo interactable in registeredInteractables)
                 {
-                    Debug.Log("Trying to add " + interactable.directorCard.spawnCard.prefab.name + " to " + SceneManager.GetActiveScene().name);
-                    if (interactable.scenes.Contains(SceneManager.GetActiveScene().name))
+                    if (interactable.multiplayerOnly && RoR2Application.isInMultiPlayer || !interactable.multiplayerOnly)
                     {
-                        Debug.Log("Succeeded!");
-                        stageInfo.interactableCategories.AddCard((int)interactable.category, interactable.directorCard);
+                        //Debug.Log("Trying to add " + interactable.directorCard.spawnCard.prefab.name + " to " + SceneManager.GetActiveScene().name);
+                        if (interactable.scenes.Contains(SceneManager.GetActiveScene().name))
+                        {
+                            stageInfo.interactableCategories.AddCard((int)interactable.category, interactable.directorCard);
+                        }
                     }
                 }
                 
@@ -125,7 +127,7 @@ namespace BetterAPI
             var spawnCard = GenerateSpawnCard(interactable);
             var interactableDirectorCard = GenerateDirectorCard(interactable, spawnCard);
 
-            InteractableInfo info = new InteractableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames, interactable);
+            InteractableInfo info = new InteractableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames, interactable, interactable.multiplayerOnly);
 
             NetworkedPrefabs.Add(interactable.interactablePrefab);
 
@@ -139,7 +141,7 @@ namespace BetterAPI
             var spawnCard = GenerateSpawnCard(interactable);
             var interactableDirectorCard = GenerateDirectorCard(interactable, spawnCard);
 
-            InteractableInfo info = new InteractableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames, interactable);
+            InteractableInfo info = new InteractableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames, interactable, interactable.multiplayerOnly);
 
             NetworkedPrefabs.Add(interactable.interactablePrefab);
 
@@ -159,7 +161,7 @@ namespace BetterAPI
             var interactableDirectorCard = GenerateDirectorCard(interactable, spawnCard);
 
 
-            InteractableInfo info = new InteractableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames, interactable);
+            InteractableInfo info = new InteractableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames, interactable, interactable.multiplayerOnly);
 
             NetworkedPrefabs.Add(interactable.interactablePrefab);
 
@@ -210,12 +212,14 @@ namespace BetterAPI
             public Category category;
             public List<string> scenes;
             public InteractableTemplate template;
-            public InteractableInfo(DirectorCard directorCard, Category category, List<string> scenes, InteractableTemplate template)
+            public bool multiplayerOnly;
+            public InteractableInfo(DirectorCard directorCard, Category category, List<string> scenes, InteractableTemplate template, bool multiplayerOnly)
             {
                 this.directorCard = directorCard;
                 this.category = category;
                 this.scenes = scenes;
                 this.template = template;
+                this.multiplayerOnly = multiplayerOnly;
             }
         }
 
@@ -242,6 +246,7 @@ namespace BetterAPI
             public int minimumStageCompletions;
             public UnlockableDef requiredUnlockableDef;
             public UnlockableDef forbiddenUnlockableDef;
+            public bool multiplayerOnly;
             
 
             public InteractableTemplate()
@@ -262,9 +267,10 @@ namespace BetterAPI
                 this.orientToFloor = true;
                 this.slightlyRandomizeOrientation = false;
                 this.skipSpawnWhenSacrificeArtifactEnabled = false;
+                this.multiplayerOnly = false;
             }
 
-            public InteractableTemplate(GameObject interactablePrefab, Category interactableCategory, int selectionWeight = 3, bool sendOverNetwork = true, HullClassification hullSize = HullClassification.Golem, MapNodeGroup.GraphType nodeGraphType = MapNodeGroup.GraphType.Ground, int directorCreditCost = 15, bool occupyPosition = true, SpawnCard.EliteRules eliteRules = SpawnCard.EliteRules.Default, bool orientToFloor = true, bool slightlyRandomizeOrientation = false, bool skipSpawnWhenSacrificeArtifactEnabled = false, NodeFlags requiredFlags = NodeFlags.None, NodeFlags forbiddenFlags = NodeFlags.None, DirectorCore.MonsterSpawnDistance spawnDistance = DirectorCore.MonsterSpawnDistance.Standard, bool allowAmbushSpawn = true, bool preventOverhead = false, int minimumStageCompletions = 0, UnlockableDef requiredUnlockableDef = null, UnlockableDef forbiddenUnlockableDef = null)
+            public InteractableTemplate(GameObject interactablePrefab, Category interactableCategory, int selectionWeight = 3, bool sendOverNetwork = true, HullClassification hullSize = HullClassification.Golem, MapNodeGroup.GraphType nodeGraphType = MapNodeGroup.GraphType.Ground, int directorCreditCost = 15, bool occupyPosition = true, SpawnCard.EliteRules eliteRules = SpawnCard.EliteRules.Default, bool orientToFloor = true, bool slightlyRandomizeOrientation = false, bool skipSpawnWhenSacrificeArtifactEnabled = false, NodeFlags requiredFlags = NodeFlags.None, NodeFlags forbiddenFlags = NodeFlags.None, DirectorCore.MonsterSpawnDistance spawnDistance = DirectorCore.MonsterSpawnDistance.Standard, bool allowAmbushSpawn = true, bool preventOverhead = false, int minimumStageCompletions = 0, UnlockableDef requiredUnlockableDef = null, UnlockableDef forbiddenUnlockableDef = null, bool multiplayerOnly = false)
             {
                 this.interactablePrefab = interactablePrefab;
                 this.interactableCategory = interactableCategory;
@@ -286,6 +292,7 @@ namespace BetterAPI
                 this.minimumStageCompletions = minimumStageCompletions;
                 this.requiredUnlockableDef = requiredUnlockableDef;
                 this.forbiddenUnlockableDef = forbiddenUnlockableDef;
+                this.multiplayerOnly = multiplayerOnly;
             }
         }
     }
