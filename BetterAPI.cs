@@ -9,40 +9,10 @@ using System.Collections;
 namespace BetterAPI
 {
     [BepInPlugin("com.xoxfaby.BetterAPI", "BetterAPI", "1.2.1.1")]
-    public class BetterAPI : BaseUnityPlugin
+    public class BetterAPI : BaseUnityPlugin, IContentPackProvider
     {
-        internal class BetterAPIContentPackProvider : IContentPackProvider
-        {
-            internal ContentPack contentPack = new ContentPack();
-            public string identifier => "com.xoxfaby.BetterAPI";
-
-            public IEnumerator LoadStaticContentAsync(LoadStaticContentAsyncArgs args)
-            {
-                this.contentPack.identifier = this.identifier;
-                contentPack.buffDefs.Add(Buffs.buffDefs.ToArray());
-                contentPack.itemDefs.Add(Items.itemDefs.ToArray());
-                contentPack.bodyPrefabs.Add(BodyPrefabs.prefabs.ToArray());
-                contentPack.masterPrefabs.Add(MasterPrefabs.prefabs.ToArray());
-                contentPack.networkedObjectPrefabs.Add(NetworkedPrefabs.prefabs.ToArray());
-                contentPack.projectilePrefabs.Add(ProjectilePrefabs.prefabs.ToArray());
-
-                args.ReportProgress(1f);
-                yield break;
-            }
-
-            public IEnumerator GenerateContentPackAsync(GetContentPackAsyncArgs args)
-            {
-                ContentPack.Copy(this.contentPack, args.output);
-                args.ReportProgress(1f);
-                yield break;
-            }
-
-            public IEnumerator FinalizeAsync(FinalizeAsyncArgs args)
-            {
-                args.ReportProgress(1f);
-                yield break;
-            }
-        }
+        internal ContentPack contentPack = new ContentPack();
+        public string identifier => "com.xoxfaby.BetterAPI";
 
         public void Awake()
         {
@@ -55,8 +25,34 @@ namespace BetterAPI
 
         private void ContentManager_collectContentPackProviders(RoR2.ContentManagement.ContentManager.AddContentPackProviderDelegate addContentPackProvider)
         {
-            addContentPackProvider(new BetterAPIContentPackProvider());
+            addContentPackProvider(this);
         }
 
+        public IEnumerator LoadStaticContentAsync(LoadStaticContentAsyncArgs args)
+        {
+            this.contentPack.identifier = this.identifier;
+            contentPack.buffDefs.Add(Buffs.buffDefs.ToArray());
+            contentPack.itemDefs.Add(Items.itemDefs.ToArray());
+            contentPack.bodyPrefabs.Add(BodyPrefabs.prefabs.ToArray());
+            contentPack.masterPrefabs.Add(MasterPrefabs.prefabs.ToArray());
+            contentPack.networkedObjectPrefabs.Add(NetworkedPrefabs.prefabs.ToArray());
+            contentPack.projectilePrefabs.Add(ProjectilePrefabs.prefabs.ToArray());
+
+            args.ReportProgress(1f);
+            yield break;
+        }
+
+        public IEnumerator GenerateContentPackAsync(GetContentPackAsyncArgs args)
+        {
+            ContentPack.Copy(this.contentPack, args.output);
+            args.ReportProgress(1f);
+            yield break;
+        }
+
+        public IEnumerator FinalizeAsync(FinalizeAsyncArgs args)
+        {
+            args.ReportProgress(1f);
+            yield break;
+        }
     }
 }
