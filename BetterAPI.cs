@@ -16,6 +16,7 @@ namespace BetterAPI
 
         public void Awake()
         {
+            RoR2.RoR2Application.isModded = true;
             RoR2.ContentManagement.ContentManager.collectContentPackProviders += ContentManager_collectContentPackProviders;
         }
         public void Start()
