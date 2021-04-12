@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace BetterAPI
 {
-    [BepInPlugin("com.xoxfaby.BetterAPI", "BetterAPI", "1.1.2.1")]
+    [BepInPlugin("com.xoxfaby.BetterAPI", "BetterAPI", "1.2.0.1")]
     public class BetterAPI : BaseUnityPlugin
     {
             

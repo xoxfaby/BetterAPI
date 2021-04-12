@@ -1,6 +1,6 @@
 # BetterAPI
 
-A simple library that adds thin wrappers around the new Ror@ Content Pack system with some helper functionality.
+A simple library that adds thin wrappers around the new RoR2 Content Pack system with some helper functionality.
 This is far from complete, if you want me to add something to it, I might do it, see how to contact me below.
 It should be enough to implement simple items, buffs, etc. 
 
@@ -11,6 +11,10 @@ For an example, check out https://github.com/xoxfaby/MoreItems
  - Items
  - Buffs
  - Languages
+ - Prefabs
+ - Objectives
+ - CostTypes
+ - Interactables (BETA)
 
 ## Support Me
 
@@ -27,6 +31,20 @@ If you need help or have suggestions, create an issue on github, join my discord
 https://github.com/xoxfaby/BetterAPI
 
 ## Changelog
+
+## v1.2.0
+ - Buffs: Fixed error that stopped buffs from being added correctly;
+ - CostTypes: Added CostType API, mainly used for interactables.
+ - Objectives: Added Objectives API to add objectives to the tracker on the top right.
+ - Added various prefab APIs:
+   - BodyPrefabs
+   - MasterPrefabs
+   - NetworkedPrefabs
+   - ProjectilePrefabs
+   - Added Util method for creating prefabs from existing gameobjects.
+ - BETA: Interactables: Added Interactables API for adding interactables such as chests, shrines, anything you want. 
+   This API is under active development, expect breaking changes in future updates as it is worked on. 
+   Join the discord if you are planning to use this API.
 
 ### v1.1.2
  - Items: Added ability to add ItemDisplays to characters that didn't originally have an ItemDisplayRuleSet (Heretic)

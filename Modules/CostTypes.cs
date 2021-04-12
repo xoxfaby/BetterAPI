@@ -8,10 +8,10 @@ using UnityEngine;
 
 namespace BetterAPI
 {
-    public static class CostType
+    public static class CostTypes
     {
         internal static List<CostTypeDef> costTypeDefs;
-        static CostType()
+        static CostTypes()
         {
             costTypeDefs = new List<CostTypeDef>();
             IL.RoR2.CostTypeCatalog.GetCostTypeDef += CostTypeCatalog_GetCostTypeDef;
