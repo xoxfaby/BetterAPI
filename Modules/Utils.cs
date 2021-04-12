@@ -27,6 +27,19 @@ namespace BetterAPI
                 return prefab;
             });
         }
+        public static ItemDef[] ItemDefsFromTier(ItemTier itemTier)
+        {
+            var itemDefs = new List<ItemDef>;
+            foreach (var itemDef in ItemCatalog.itemDefs)
+            {
+
+                if (itemDef.tier == itemTier)
+                {
+                    itemDefs.Add(itemDef);
+                }
+            }
+            return itemDefs.ToArray();
+        }
 
         public static GameObject PrefabFromGameObject(GameObject gameObject)
         {
