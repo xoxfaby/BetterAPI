@@ -8,7 +8,7 @@ using System.Collections;
 
 namespace BetterAPI
 {
-    [BepInPlugin("com.xoxfaby.BetterAPI", "BetterAPI", "1.2.0.1")]
+    [BepInPlugin("com.xoxfaby.BetterAPI", "BetterAPI", "1.2.1.1")]
     public class BetterAPI : BaseUnityPlugin
     {
         internal class BetterAPIContentPackProvider : IContentPackProvider
@@ -21,8 +21,10 @@ namespace BetterAPI
                 this.contentPack.identifier = this.identifier;
                 contentPack.buffDefs.Add(Buffs.buffDefs.ToArray());
                 contentPack.itemDefs.Add(Items.itemDefs.ToArray());
-                contentPack.networkedObjectPrefabs.Add(Prefabs.prefabs.ToArray());
-                contentPack.bodyPrefabs.Add(Bodies.prefabs.ToArray());
+                contentPack.bodyPrefabs.Add(BodyPrefabs.prefabs.ToArray());
+                contentPack.masterPrefabs.Add(MasterPrefabs.prefabs.ToArray());
+                contentPack.networkedObjectPrefabs.Add(NetworkedPrefabs.prefabs.ToArray());
+                contentPack.projectilePrefabs.Add(ProjectilePrefabs.prefabs.ToArray());
 
                 args.ReportProgress(1f);
                 yield break;

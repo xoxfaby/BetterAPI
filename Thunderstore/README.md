@@ -32,6 +32,10 @@ https://github.com/xoxfaby/BetterAPI
 
 ## Changelog
 
+## v1.2.1
+ - Updated for latest RoR2 Patch. 
+   This is NOT a breaking change, if your mod uses BetterAPI it should continue working now. 
+
 ## v1.2.0
  - Buffs: Fixed error that stopped buffs from being added correctly;
  - CostTypes: Added CostType API, mainly used for interactables.
