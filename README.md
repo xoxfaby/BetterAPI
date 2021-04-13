@@ -15,6 +15,7 @@ For an example, check out https://github.com/xoxfaby/MoreItems
  - Objectives
  - CostTypes
  - Interactables (BETA)
+ - Stats (BETA)
 
 ## Support Me
 
@@ -32,7 +33,14 @@ https://github.com/xoxfaby/BetterAPI
 
 ## Changelog
 
-## v1.2.1
+## v1.3.0
+ - Added Stats API:
+   This API provides an easy way to add stats characterBody's without having to deal with IL hooks. 
+   Currently the API barely has any implemented, if you need easy access to a stat for your mod it's best to suggest it to us in our Discord so we can add the appropriate functionality.
+ - This version also ensures that RoR2 knows the game is modded when BetterAPI is used. I don't see any reason a clientside non-game-affecting mod would need to use BetterAPI so this is not likely to be changed. 
+ - 
+
+### v1.2.1
  - Updated for latest RoR2 Patch. 
    This is NOT a breaking change, if your mod uses BetterAPI it should continue working now. 
 
