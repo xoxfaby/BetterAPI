@@ -49,17 +49,14 @@ namespace BetterAPI
             var networkId = prefab.GetComponent<NetworkIdentity>();
             if (networkId)
             {
-                BetterAPI.print("Prefab already has NetworkID");
                 if (!prefabCounter.ContainsKey(gameObject)) prefabCounter.Add(gameObject, 0);
                 prefabCounter[gameObject]++;
-                BetterAPI.print($"Original ID: {networkId.assetId.ToString()}");
                 Hash128 newHash = Hash128.Parse(networkId.assetId.ToString());
-                BetterAPI.print($"Copied ID: {newHash}");
+                networkId.assetId.Reset();
                 for (int i = 0; i < prefabCounter[gameObject]; i++)
                 {
                     newHash = Hash128.Compute(newHash.ToString());
                 }
-                BetterAPI.print($"New ID: {newHash}");
                 ClientScene.RegisterPrefab(prefab, NetworkHash128.Parse(newHash.ToString()));
             }
             return prefab;
