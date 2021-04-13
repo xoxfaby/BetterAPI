@@ -11,7 +11,6 @@ namespace BetterAPI
     {
 
         internal static Lazy<GameObject> _prefabParent;
-        internal static Dictionary<GameObject, int> prefabCounter = new Dictionary<GameObject, int>();
         internal static GameObject prefabParent { get { return _prefabParent.Value; } }
 
         static Utils()
@@ -43,21 +42,16 @@ namespace BetterAPI
             return itemDefs.ToArray();
         }
 
-        public static GameObject PrefabFromGameObject(GameObject gameObject)
+        public static GameObject PrefabFromGameObject(GameObject gameObject,
+            [System.Runtime.CompilerServices.CallerMemberName] string memberName = "",
+            [System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "",
+            [System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
         {
             var prefab = UnityEngine.Object.Instantiate(gameObject, prefabParent.transform);
             var networkId = prefab.GetComponent<NetworkIdentity>();
             if (networkId)
             {
-                if (!prefabCounter.ContainsKey(gameObject)) prefabCounter.Add(gameObject, 0);
-                prefabCounter[gameObject]++;
-                Hash128 newHash = Hash128.Parse(networkId.assetId.ToString());
-                networkId.assetId.Reset();
-                for (int i = 0; i < prefabCounter[gameObject]; i++)
-                {
-                    newHash = Hash128.Compute(newHash.ToString());
-                }
-                networkId.m_AssetId = NetworkHash128.Parse(newHash.ToString());
+                networkId.SetDynamicAssetId(NetworkHash128.Parse(Hash128.Compute(sourceLineNumber + memberName + sourceFilePath).ToString()));
             }
             return prefab;
         }
