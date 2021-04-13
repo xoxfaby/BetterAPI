@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using RoR2;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace BetterAPI
 {
@@ -10,6 +11,7 @@ namespace BetterAPI
     {
 
         internal static Lazy<GameObject> _prefabParent;
+        internal static Dictionary<GameObject, int> prefabCounter = new Dictionary<GameObject, int>();
         internal static GameObject prefabParent { get { return _prefabParent.Value; } }
 
         static Utils()
@@ -44,6 +46,15 @@ namespace BetterAPI
         public static GameObject PrefabFromGameObject(GameObject gameObject)
         {
             var prefab = UnityEngine.Object.Instantiate(gameObject, prefabParent.transform);
+            var networkId = prefab.GetComponent<NetworkIdentity>();
+            if (networkId)
+            {
+                var newnetworkId = NetworkHash128.Parse(networkId.assetId.ToString());
+                if (!prefabCounter.ContainsKey(gameObject)) prefabCounter.Add(gameObject, 0);
+                prefabCounter[gameObject]++;
+                for (int i = 1; i < prefabCounter[gameObject]; i++) newnetworkId = NetworkHash128.Parse(newnetworkId.ToString());
+                ClientScene.RegisterPrefab(prefab, newnetworkId);
+            }
             return prefab;
         }
 
