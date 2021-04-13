@@ -49,10 +49,17 @@ namespace BetterAPI
             var networkId = prefab.GetComponent<NetworkIdentity>();
             if (networkId)
             {
+                BetterAPI.print("Prefab already has NetworkID");
+                BetterAPI.print($"Original ID: {networkId.assetId.ToString()}");
                 var newnetworkId = NetworkHash128.Parse(networkId.assetId.ToString());
+                BetterAPI.print($"New ID: {newnetworkId.ToString()}");
                 if (!prefabCounter.ContainsKey(gameObject)) prefabCounter.Add(gameObject, 0);
                 prefabCounter[gameObject]++;
-                for (int i = 1; i < prefabCounter[gameObject]; i++) newnetworkId = NetworkHash128.Parse(newnetworkId.ToString());
+                for (int i = 1; i < prefabCounter[gameObject]; i++)
+                {
+                    newnetworkId = NetworkHash128.Parse(newnetworkId.ToString());
+                    BetterAPI.print($"Rerolled ID, new ID: {newnetworkId.ToString()}");
+                }
                 ClientScene.RegisterPrefab(prefab, newnetworkId);
             }
             return prefab;
