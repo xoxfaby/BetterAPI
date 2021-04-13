@@ -57,7 +57,7 @@ namespace BetterAPI
                 BetterAPI.print($"Copied ID: {newHash}");
                 for (int i = 0; i < prefabCounter[gameObject]; i++)
                 {
-                    Hash128.Compute(newHash.ToString());
+                    newHash = Hash128.Compute(newHash.ToString());
                 }
                 BetterAPI.print($"New ID: {newHash}");
                 ClientScene.RegisterPrefab(prefab, NetworkHash128.Parse(newHash.ToString()));
