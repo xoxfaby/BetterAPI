@@ -57,7 +57,7 @@ namespace BetterAPI
                 {
                     newHash = Hash128.Compute(newHash.ToString());
                 }
-                ClientScene.RegisterPrefab(prefab, NetworkHash128.Parse(newHash.ToString()));
+                networkId.m_AssetId = NetworkHash128.Parse(newHash.ToString());
             }
             return prefab;
         }

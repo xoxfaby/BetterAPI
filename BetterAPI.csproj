@@ -33,7 +33,7 @@
       <HintPath>..\Libs\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Networking">
-      <HintPath>..\Libs\UnityEngine.Networking.dll</HintPath>
+      <HintPath>..\Libs\UnityEngine.Networking.refstub.dll</HintPath>
     </Reference>
   </ItemGroup>
 
