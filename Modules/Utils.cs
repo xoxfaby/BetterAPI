@@ -29,7 +29,7 @@ namespace BetterAPI
         }
         public static ItemDef[] ItemDefsFromTier(ItemTier itemTier)
         {
-            var itemDefs = new List<ItemDef>;
+            var itemDefs = new List<ItemDef>();
             foreach (var itemDef in ItemCatalog.itemDefs)
             {
 

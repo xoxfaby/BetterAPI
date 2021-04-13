@@ -18,10 +18,11 @@ namespace BetterAPI
         {
             RoR2.RoR2Application.isModded = true;
             RoR2.ContentManagement.ContentManager.collectContentPackProviders += ContentManager_collectContentPackProviders;
+            BodyCatalog.availability.CallWhenAvailable(Items.ApplyCustomItemDisplayRules);
         }
+
         public void Start()
         {
-            Items.ApplyCustomItemDisplayRules();
         }
 
         private void ContentManager_collectContentPackProviders(RoR2.ContentManagement.ContentManager.AddContentPackProviderDelegate addContentPackProvider)
@@ -41,7 +42,10 @@ namespace BetterAPI
 
             args.ReportProgress(1f);
             yield break;
+
+
         }
+
 
         public IEnumerator GenerateContentPackAsync(GetContentPackAsyncArgs args)
         {
