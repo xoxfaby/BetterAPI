@@ -51,7 +51,7 @@ namespace BetterAPI
             var networkId = prefab.GetComponent<NetworkIdentity>();
             if (networkId)
             {
-                networkId.SetDynamicAssetId(NetworkHash128.Parse(Hash128.Compute(sourceLineNumber + memberName + sourceFilePath).ToString()));
+                networkId.m_AssetId = NetworkHash128.Parse(Hash128.Compute(sourceLineNumber + memberName + sourceFilePath).ToString());
             }
             return prefab;
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using RoR2;
 using UnityEngine;
@@ -8,19 +9,24 @@ namespace BetterAPI
 {
     public static class Items
     {
-        internal readonly static List<ItemDef> itemDefs;
         internal readonly static Dictionary<String, Dictionary<UnityEngine.Object, ItemDisplayRule[]>> characterModelItemDisplayRulesDicts;
         internal readonly static Dictionary<String, Dictionary<UnityEngine.Object, ItemDisplayRule[]>> bodyPrefabItemDisplayRulesDicts;
         static Items()
         {
-            itemDefs = new List<ItemDef>();
             characterModelItemDisplayRulesDicts = new Dictionary<string, Dictionary<UnityEngine.Object, ItemDisplayRule[]>>();
             bodyPrefabItemDisplayRulesDicts = new Dictionary<string, Dictionary<UnityEngine.Object, ItemDisplayRule[]>>();
         }
 
+
         public static ItemDef Add(ItemDef itemDef, CharacterItemDisplayRule[] characterItemDisplayRules = null)
         {
-            itemDefs.Add(itemDef);
+            return Add(itemDef, characterItemDisplayRules, Assembly.GetCallingAssembly().GetName().Name);
+        }
+
+        public static ItemDef Add(ItemDef itemDef, CharacterItemDisplayRule[] characterItemDisplayRules = null, String contentPackIdentifier = null)
+        {
+            contentPackIdentifier = contentPackIdentifier ?? Assembly.GetCallingAssembly().GetName().Name;
+            ContentPacks.Packs[contentPackIdentifier].itemDefs.Add(itemDef);
             if(characterItemDisplayRules != null)
             {
                 foreach (var characterItemDisplayRule in characterItemDisplayRules)
@@ -32,6 +38,11 @@ namespace BetterAPI
         }
         public static ItemDef Add(ItemTemplate itemTemplate)
         {
+            return Add(itemTemplate, Assembly.GetCallingAssembly().GetName().Name);
+        }
+        public static ItemDef Add(ItemTemplate itemTemplate, String contentPackIdentifier = null)
+        {
+            contentPackIdentifier = contentPackIdentifier ?? Assembly.GetCallingAssembly().GetName().Name;
             ItemDef itemDef = ScriptableObject.CreateInstance<ItemDef>();
             itemDef.name = itemTemplate.internalName;
             itemDef.tier = itemTemplate.tier;
@@ -48,7 +59,7 @@ namespace BetterAPI
             Languages.AddTokenString(itemDef.descriptionToken, itemTemplate.descriptionText);
             Languages.AddTokenString(itemDef.loreToken, itemTemplate.loreText);
 
-            return Add(itemDef, itemTemplate.characterItemDisplayRules);
+            return Add(itemDef, itemTemplate.characterItemDisplayRules, contentPackIdentifier);
         }
         public static void AddItemDisplayRule(UnityEngine.Object keyAsset, ItemDisplayRule[] itemDisplayRules, String characterModelName = null, String bodyName = null)
         {

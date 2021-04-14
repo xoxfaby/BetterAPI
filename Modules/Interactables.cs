@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using RoR2;
 using RoR2.Navigation;
@@ -119,51 +120,41 @@ namespace BetterAPI
 
             return names;
         }
-
         public static InteractableInfo AddToStages(InteractableTemplate interactable, Stages stages)
         {
+            return AddToStages(interactable, stages, Assembly.GetCallingAssembly().GetName().Name);
+        }
+        public static InteractableInfo AddToStages(InteractableTemplate interactable, Stages stages, String contentPackIdentifier = null)
+        {
+            contentPackIdentifier = contentPackIdentifier ?? Assembly.GetCallingAssembly().GetName().Name;
             var sceneNames = GetSceneNames(stages);
 
-            var spawnCard = GenerateSpawnCard(interactable);
-            var interactableDirectorCard = GenerateDirectorCard(interactable, spawnCard);
-
-            InteractableInfo info = new InteractableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames, interactable, interactable.multiplayerOnly);
-
-            NetworkedPrefabs.Add(interactable.interactablePrefab);
-
-            registeredInteractables.Add(info);
-
-            return info;
+            return AddToStages(interactable, sceneNames, contentPackIdentifier);
         }
-
-        public static InteractableInfo AddToStages(InteractableTemplate interactable, List<string> sceneNames)
-        {
-            var spawnCard = GenerateSpawnCard(interactable);
-            var interactableDirectorCard = GenerateDirectorCard(interactable, spawnCard);
-
-            InteractableInfo info = new InteractableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames, interactable, interactable.multiplayerOnly);
-
-            NetworkedPrefabs.Add(interactable.interactablePrefab);
-
-            registeredInteractables.Add(info);
-
-            return info;
-        }
-
         public static InteractableInfo AddToStage(InteractableTemplate interactable, string sceneName)
         {
+            return AddToStage(interactable, sceneName, Assembly.GetCallingAssembly().GetName().Name);
+        }
+        public static InteractableInfo AddToStage(InteractableTemplate interactable, string sceneName, String contentPackIdentifier = null)
+        {
+            contentPackIdentifier = contentPackIdentifier ?? Assembly.GetCallingAssembly().GetName().Name;
             var sceneNames = new List<string>();
-
             sceneNames.Add(sceneName);
-
-
+            return AddToStages(interactable, sceneNames, contentPackIdentifier);
+        }
+        public static InteractableInfo AddToStages(InteractableTemplate interactable, List<string> sceneNames)
+        {
+            return AddToStages(interactable, sceneNames, Assembly.GetCallingAssembly().GetName().Name);
+        }
+        public static InteractableInfo AddToStages(InteractableTemplate interactable, List<string> sceneNames, String contentPackIdentifier = null)
+        {
+            contentPackIdentifier = contentPackIdentifier ?? Assembly.GetCallingAssembly().GetName().Name;
             var spawnCard = GenerateSpawnCard(interactable);
             var interactableDirectorCard = GenerateDirectorCard(interactable, spawnCard);
 
-
             InteractableInfo info = new InteractableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames, interactable, interactable.multiplayerOnly);
 
-            NetworkedPrefabs.Add(interactable.interactablePrefab);
+            NetworkedPrefabs.Add(interactable.interactablePrefab, contentPackIdentifier);
 
             registeredInteractables.Add(info);
 
