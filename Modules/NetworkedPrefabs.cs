@@ -16,7 +16,7 @@ namespace BetterAPI
         public static void Add(GameObject prefab, String contentPackIdentifier = null)
         {
             contentPackIdentifier = contentPackIdentifier ?? Assembly.GetCallingAssembly().GetName().Name;
-            if (ContentPacks.Packs[contentPackIdentifier].networkedPrefabs.Contains(prefab))
+            if (!ContentPacks.Packs[contentPackIdentifier].networkedPrefabs.Contains(prefab))
             {
                 ContentPacks.Packs[contentPackIdentifier].networkedPrefabs.Add(prefab);
             }
