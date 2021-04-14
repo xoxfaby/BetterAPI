@@ -33,6 +33,11 @@ https://github.com/xoxfaby/BetterAPI
 
 ## Changelog
 
+### v1.3.2
+ - Bugfix: Fixed NetworkedPrefabs not actually getting registered
+ - BETA: Stats: Added placeholders for other stats that should get added in the future. If you need specific support for one of these stats or any other, contact XoXFaby.
+ - Bumped BepInEx dependency version.
+
 ### v1.3.1
  - Internal change: Content from different mods now loads into separate content packs. This likely won't affect anything but it would help if a mod wants to wait for a specific contentpack to load. 
    All methods that add "content" now have overloads that let you provide an identifier, if left empty, the Assembly name will be used. 

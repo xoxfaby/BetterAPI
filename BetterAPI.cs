@@ -7,7 +7,7 @@ using System.Collections;
 
 namespace BetterAPI
 {
-    [BepInPlugin("com.xoxfaby.BetterAPI", "BetterAPI", "1.3.1.1")]
+    [BepInPlugin("com.xoxfaby.BetterAPI", "BetterAPI", "1.3.2.1")]
     public class BetterAPI : BaseUnityPlugin
     {
         public void Awake()
