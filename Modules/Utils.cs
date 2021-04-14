@@ -9,7 +9,6 @@ namespace BetterAPI
 {
     public static class Utils
     {
-
         internal static Lazy<GameObject> _prefabParent;
         internal static GameObject prefabParent { get { return _prefabParent.Value; } }
 
@@ -55,6 +54,5 @@ namespace BetterAPI
             }
             return prefab;
         }
-
     }
 }

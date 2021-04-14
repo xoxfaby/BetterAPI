@@ -9,6 +9,7 @@ namespace BetterAPI
     {
 
         public static StatsEventHandler health = new StatsEventHandler();
+        public static StatsEventHandler regen = new StatsEventHandler();
         public static StatsEventHandler shield = new StatsEventHandler();
         public static StatsEventHandler damage = new StatsEventHandler();
         public static StatsEventHandler armor = new StatsEventHandler();
@@ -17,6 +18,8 @@ namespace BetterAPI
         public static StatsEventHandler attackSpeed = new StatsEventHandler();
         public static StatsEventHandler critChance = new StatsEventHandler();
         public static StatsEventHandler jumps = new StatsEventHandler();
+        public static StatsEventHandler curse = new StatsEventHandler();
+        public static StatsEventHandler luck = new StatsEventHandler();
         static Stats()
         {
             IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
