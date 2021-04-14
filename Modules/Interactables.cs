@@ -154,7 +154,10 @@ namespace BetterAPI
 
             InteractableInfo info = new InteractableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames, interactable, interactable.multiplayerOnly);
 
-            NetworkedPrefabs.Add(interactable.interactablePrefab, contentPackIdentifier);
+            if(interactable.interactablePrefab.GetComponent<NetworkIdentity>())
+            {
+                NetworkedPrefabs.Add(interactable.interactablePrefab, contentPackIdentifier);
+            }
 
             registeredInteractables.Add(info);
 
