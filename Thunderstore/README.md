@@ -33,6 +33,12 @@ https://github.com/xoxfaby/BetterAPI
 
 ## Changelog
 
+### v1.3.3
+ - Registers mods that add a contentpack to the networed mod list.
+ - Only sets isModded to true if a mod has added a contentpack.
+ - Utils: ItemDefsFromTier optionally only returns items that are unlocked. 
+ - Changed dependency to HookgenPatcher instead of MMHOOK Standalone.
+
 ### v1.3.2
  - Bugfix: Fixed NetworkedPrefabs not actually getting registered
  - BETA: Stats: Added placeholders for other stats that should get added in the future. If you need specific support for one of these stats or any other, contact XoXFaby.
