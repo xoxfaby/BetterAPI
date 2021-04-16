@@ -27,7 +27,12 @@ namespace BetterAPI
                 return prefab;
             });
         }
+
         public static ItemDef[] ItemDefsFromTier(ItemTier itemTier)
+        {
+            return ItemDefsFromTier(itemTier, false);
+        }
+        public static ItemDef[] ItemDefsFromTier(ItemTier itemTier, bool onlyUnlocked = false)
         {
             var itemDefs = new List<ItemDef>();
             foreach (var itemDef in ItemCatalog.itemDefs)
@@ -35,11 +40,23 @@ namespace BetterAPI
 
                 if (itemDef.tier == itemTier)
                 {
-                    itemDefs.Add(itemDef);
+                    if (!onlyUnlocked || (Run.instance && Run.instance.IsItemAvailable(itemDef.itemIndex)))
+                    {
+                        itemDefs.Add(itemDef);
+                    }
+                    else if(!Run.instance)
+                    {
+                        foreach (var userProfile in UserProfile.loggedInProfiles)
+                        {
+                            if (userProfile.HasUnlockable(itemDef.unlockableDef)) itemDefs.Add(itemDef);
+                            continue;
+                        }
+                    }
                 }
             }
             return itemDefs.ToArray();
         }
+
 
         public static GameObject PrefabFromGameObject(GameObject gameObject,
             [System.Runtime.CompilerServices.CallerMemberName] string memberName = "",
