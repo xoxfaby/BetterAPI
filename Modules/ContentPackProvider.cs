@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using RoR2;
 using RoR2.ContentManagement;
@@ -37,6 +38,7 @@ namespace BetterAPI
             {
                 this.identifier = identifier;
                 RoR2.RoR2Application.isModded = true;
+                RoR2.NetworkModCompatibilityHelper.networkModList = RoR2.NetworkModCompatibilityHelper.networkModList.Append(identifier);
                 RoR2.ContentManagement.ContentManager.collectContentPackProviders += ContentManager_collectContentPackProviders; 
             }
             private void ContentManager_collectContentPackProviders(RoR2.ContentManagement.ContentManager.AddContentPackProviderDelegate addContentPackProvider)
