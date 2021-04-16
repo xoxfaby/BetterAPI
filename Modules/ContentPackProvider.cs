@@ -36,6 +36,7 @@ namespace BetterAPI
             internal ContentPackProvider(String identifier)
             {
                 this.identifier = identifier;
+                RoR2.RoR2Application.isModded = true;
                 RoR2.ContentManagement.ContentManager.collectContentPackProviders += ContentManager_collectContentPackProviders; 
             }
             private void ContentManager_collectContentPackProviders(RoR2.ContentManagement.ContentManager.AddContentPackProviderDelegate addContentPackProvider)
