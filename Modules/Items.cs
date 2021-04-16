@@ -13,6 +13,7 @@ namespace BetterAPI
         internal readonly static Dictionary<String, Dictionary<UnityEngine.Object, ItemDisplayRule[]>> bodyPrefabItemDisplayRulesDicts;
         static Items()
         {
+            BodyCatalog.availability.CallWhenAvailable(Items.ApplyCustomItemDisplayRules);
             characterModelItemDisplayRulesDicts = new Dictionary<string, Dictionary<UnityEngine.Object, ItemDisplayRule[]>>();
             bodyPrefabItemDisplayRulesDicts = new Dictionary<string, Dictionary<UnityEngine.Object, ItemDisplayRule[]>>();
         }

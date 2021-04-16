@@ -13,7 +13,6 @@ namespace BetterAPI
         public void Awake()
         {
             RoR2.RoR2Application.isModded = true;
-            BodyCatalog.availability.CallWhenAvailable(Items.ApplyCustomItemDisplayRules);
         }
 
     }
