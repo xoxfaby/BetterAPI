@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
 using RoR2;
 using RoR2.Navigation;
 using UnityEngine;
@@ -80,8 +82,36 @@ namespace BetterAPI
         static Interactables()
         {
             On.RoR2.SceneDirector.Start += SceneDirector_Start;
+            On.RoR2.SceneDirector.PopulateScene += SceneDirector_PopulateScene;
         }
 
+        private static void SceneDirector_PopulateScene(On.RoR2.SceneDirector.orig_PopulateScene orig, SceneDirector self)
+        {
+            foreach (InteractableInfo interactable in registeredInteractables)
+            {
+                if (interactable.minimumCount > 0)
+                {
+                    for (var i = 0; i < interactable.minimumCount; i++)
+                    {
+                        DirectorPlacementRule placementRule = new DirectorPlacementRule
+                        {
+                            placementMode = DirectorPlacementRule.PlacementMode.Random
+                        };
+                        GameObject gameObject = self.directorCore.TrySpawnObject(new DirectorSpawnRequest(interactable.directorCard.spawnCard, placementRule, self.rng));
+                        if (gameObject)
+                        {
+                            PurchaseInteraction component = gameObject.GetComponent<PurchaseInteraction>();
+                            if (component && component.costType == CostTypeIndex.Money)
+                            {
+                                component.Networkcost = Run.instance.GetDifficultyScaledCost(component.cost);
+
+                            }
+                        }
+                    }
+                }
+            }
+            orig(self);
+        }
 
         private static void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
         {
@@ -152,7 +182,7 @@ namespace BetterAPI
             var spawnCard = GenerateSpawnCard(interactable);
             var interactableDirectorCard = GenerateDirectorCard(interactable, spawnCard);
 
-            InteractableInfo info = new InteractableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames, interactable, interactable.multiplayerOnly);
+            InteractableInfo info = new InteractableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames, interactable, interactable.multiplayerOnly, interactable.minimumCount);
 
             if(interactable.interactablePrefab.GetComponent<NetworkIdentity>())
             {
@@ -207,13 +237,15 @@ namespace BetterAPI
             public List<string> scenes;
             public InteractableTemplate template;
             public bool multiplayerOnly;
-            public InteractableInfo(DirectorCard directorCard, Category category, List<string> scenes, InteractableTemplate template, bool multiplayerOnly)
+            public int minimumCount;
+            public InteractableInfo(DirectorCard directorCard, Category category, List<string> scenes, InteractableTemplate template, bool multiplayerOnly, int minimumCount)
             {
                 this.directorCard = directorCard;
                 this.category = category;
                 this.scenes = scenes;
                 this.template = template;
                 this.multiplayerOnly = multiplayerOnly;
+                this.minimumCount = minimumCount;
             }
         }
 
@@ -223,6 +255,7 @@ namespace BetterAPI
             public GameObject interactablePrefab;
             public Category interactableCategory;
             public int selectionWeight;
+            public int minimumCount;
             public bool sendOverNetwork;
             public HullClassification hullSize;
             public MapNodeGroup.GraphType nodeGraphType;
@@ -245,6 +278,7 @@ namespace BetterAPI
 
             public InteractableTemplate()
             {
+                this.minimumCount = 0;
                 this.selectionWeight = 3;
                 this.spawnDistance = DirectorCore.MonsterSpawnDistance.Standard;
                 this.allowAmbushSpawn = true;
@@ -264,11 +298,12 @@ namespace BetterAPI
                 this.multiplayerOnly = false;
             }
 
-            public InteractableTemplate(GameObject interactablePrefab, Category interactableCategory, int selectionWeight = 3, bool sendOverNetwork = true, HullClassification hullSize = HullClassification.Golem, MapNodeGroup.GraphType nodeGraphType = MapNodeGroup.GraphType.Ground, int directorCreditCost = 15, bool occupyPosition = true, SpawnCard.EliteRules eliteRules = SpawnCard.EliteRules.Default, bool orientToFloor = true, bool slightlyRandomizeOrientation = false, bool skipSpawnWhenSacrificeArtifactEnabled = false, NodeFlags requiredFlags = NodeFlags.None, NodeFlags forbiddenFlags = NodeFlags.None, DirectorCore.MonsterSpawnDistance spawnDistance = DirectorCore.MonsterSpawnDistance.Standard, bool allowAmbushSpawn = true, bool preventOverhead = false, int minimumStageCompletions = 0, UnlockableDef requiredUnlockableDef = null, UnlockableDef forbiddenUnlockableDef = null, bool multiplayerOnly = false)
+            public InteractableTemplate(GameObject interactablePrefab, Category interactableCategory, int selectionWeight = 3, bool sendOverNetwork = true, HullClassification hullSize = HullClassification.Golem, MapNodeGroup.GraphType nodeGraphType = MapNodeGroup.GraphType.Ground, int directorCreditCost = 15, bool occupyPosition = true, SpawnCard.EliteRules eliteRules = SpawnCard.EliteRules.Default, bool orientToFloor = true, bool slightlyRandomizeOrientation = false, bool skipSpawnWhenSacrificeArtifactEnabled = false, NodeFlags requiredFlags = NodeFlags.None, NodeFlags forbiddenFlags = NodeFlags.None, DirectorCore.MonsterSpawnDistance spawnDistance = DirectorCore.MonsterSpawnDistance.Standard, bool allowAmbushSpawn = true, bool preventOverhead = false, int minimumStageCompletions = 0, UnlockableDef requiredUnlockableDef = null, UnlockableDef forbiddenUnlockableDef = null, bool multiplayerOnly = false, int minimumCount = 0)
             {
                 this.interactablePrefab = interactablePrefab;
                 this.interactableCategory = interactableCategory;
                 this.selectionWeight = selectionWeight;
+                this.minimumCount = minimumCount;
                 this.sendOverNetwork = sendOverNetwork;
                 this.hullSize = hullSize;
                 this.nodeGraphType = nodeGraphType;
