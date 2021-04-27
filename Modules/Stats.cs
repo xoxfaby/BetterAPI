@@ -22,7 +22,7 @@ namespace BetterAPI
         public static StatsEventHandler luck = new StatsEventHandler();
         static Stats()
         {
-            IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+            BetterAPIPlugin.Hooks.Add<RoR2.CharacterBody>("RecalculateStats", CharacterBody_RecalculateStats);
         }
 
         private static void CharacterBody_RecalculateStats(ILContext il)

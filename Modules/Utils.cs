@@ -20,10 +20,10 @@ namespace BetterAPI
                 UnityEngine.Object.DontDestroyOnLoad(prefab);
                 prefab.SetActive(false);
 
-                On.RoR2.Util.IsPrefab += (orig, obj) =>
+                BetterAPIPlugin.Hooks.Add<UnityEngine.GameObject,bool>(typeof(RoR2.Util), "IsPrefab", (orig, obj) =>
                 {
                     return obj.transform.parent && obj.transform.parent.gameObject.name == "CustomPrefabs" || orig(obj);
-                };
+                });
                 return prefab;
             });
         }

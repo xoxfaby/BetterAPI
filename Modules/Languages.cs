@@ -12,16 +12,16 @@ namespace BetterAPI
             languages = new Dictionary<string, Dictionary<string, string>>();
             languages.Add("", new Dictionary<string, string>());
 
-            On.RoR2.Language.GetLocalizedStringByToken += Language_GetLocalizedStringByToken;
-            On.RoR2.Language.TokenIsRegistered += Language_TokenIsRegistered;
+            BetterAPIPlugin.Hooks.Add<RoR2.Language, string, string>("GetLocalizedStringByToken", Language_GetLocalizedStringByToken);
+            BetterAPIPlugin.Hooks.Add<RoR2.Language, string, bool>("TokenIsRegistered", Language_TokenIsRegistered);
         }
 
-        private static bool Language_TokenIsRegistered(On.RoR2.Language.orig_TokenIsRegistered orig, RoR2.Language self, string token)
+        private static bool Language_TokenIsRegistered(Func<RoR2.Language, string, bool> orig, RoR2.Language self, string token)
         {
             return languages.ContainsKey(self.name) && languages[self.name].ContainsKey(token) || languages[""].ContainsKey(token) || orig(self, token);
         }
 
-        private static string Language_GetLocalizedStringByToken(On.RoR2.Language.orig_GetLocalizedStringByToken orig, RoR2.Language self, string token)
+        private static string Language_GetLocalizedStringByToken(Func<RoR2.Language, string, string> orig, RoR2.Language self, string token)
         {
             String token_string;
             if(languages.ContainsKey(self.name) && languages[self.name].TryGetValue(token, out token_string) || languages[""].TryGetValue(token, out token_string)) {

@@ -81,11 +81,11 @@ namespace BetterAPI
 
         static Interactables()
         {
-            On.RoR2.SceneDirector.Start += SceneDirector_Start;
-            On.RoR2.SceneDirector.PopulateScene += SceneDirector_PopulateScene;
+            BetterAPIPlugin.Hooks.Add<RoR2.SceneDirector>("Start", SceneDirector_Start);
+            BetterAPIPlugin.Hooks.Add<RoR2.SceneDirector>("PopulateScene", SceneDirector_PopulateScene);
         }
 
-        private static void SceneDirector_PopulateScene(On.RoR2.SceneDirector.orig_PopulateScene orig, SceneDirector self)
+        private static void SceneDirector_PopulateScene(Action<RoR2.SceneDirector> orig, SceneDirector self)
         {
             foreach (InteractableInfo interactable in registeredInteractables)
             {
@@ -113,7 +113,7 @@ namespace BetterAPI
             orig(self);
         }
 
-        private static void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
+        private static void SceneDirector_Start(Action<RoR2.SceneDirector> orig, SceneDirector self)
         {
             if (NetworkServer.active)
             {

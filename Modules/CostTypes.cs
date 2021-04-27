@@ -14,7 +14,7 @@ namespace BetterAPI
         static CostTypes()
         {
             costTypeDefs = new List<CostTypeDef>();
-            IL.RoR2.CostTypeCatalog.GetCostTypeDef += CostTypeCatalog_GetCostTypeDef;
+            BetterAPIPlugin.Hooks.Add(typeof(RoR2.CostTypeCatalog), "GetCostTypeDef", CostTypeCatalog_GetCostTypeDef);
             CostTypeCatalog.modHelper.getAdditionalEntries += (list) => list.AddRange(costTypeDefs);
         }
 
