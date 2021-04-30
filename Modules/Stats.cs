@@ -37,23 +37,24 @@ namespace BetterAPI
 
             if (found)
             {
-                c.Emit(OpCodes.Ldloc, healthVar);
                 c.Emit(OpCodes.Ldarg_0);
+                c.Emit(OpCodes.Ldloc, healthVar);
                 c.EmitDelegate<Func<CharacterBody,float, float>>((characterBody, maxHealth) => maxHealth * health.getMultiplier(characterBody));
                 c.Emit(OpCodes.Stloc, healthVar);
 
+                c.Index = 0;
 
-                found = c.TryGotoPrev(
-                    x => x.MatchLdloc(healthVar),
-                    x => x.MatchLdloc(out _),
-                    x => x.MatchMul()
+                found = c.TryGotoNext(
+                    x => x.MatchStloc(healthVar)
                 );
+
+                c.Index++;
 
                 if (found)
                 {
-
-                    c.Emit(OpCodes.Ldloc, healthVar);
+                    
                     c.Emit(OpCodes.Ldarg_0);
+                    c.Emit(OpCodes.Ldloc, healthVar);
                     c.EmitDelegate<Func<CharacterBody, float, float>>((characterBody, maxHealth) => maxHealth + health.getBonus(characterBody));
                     c.Emit(OpCodes.Stloc, healthVar);
                 }
