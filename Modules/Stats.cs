@@ -29,13 +29,13 @@ namespace BetterAPI
         {
             var c = new ILCursor(il);
             int healthVar = 0;
-            bool found = c.TryGotoNext(
+            bool foundHealthVar = c.TryGotoNext(
                 x => x.MatchLdarg(0),
                 x => x.MatchLdloc(out healthVar),
                 x => x.MatchCall<CharacterBody>("set_maxHealth")
             );
 
-            if (found)
+            if (foundHealthVar)
             {
                 c.Emit(OpCodes.Ldarg_0);
                 c.Emit(OpCodes.Ldloc, healthVar);
@@ -44,18 +44,20 @@ namespace BetterAPI
 
                 c.Index = 0;
 
-                found = c.TryGotoNext(
+                foundHealthVar = c.TryGotoNext(
                     x => x.MatchStloc(healthVar)
                 );
 
                 c.Index++;
 
-                if (found)
+                if (foundHealthVar)
                 {
                     
                     c.Emit(OpCodes.Ldarg_0);
                     c.Emit(OpCodes.Ldloc, healthVar);
-                    c.EmitDelegate<Func<CharacterBody, float, float>>((characterBody, maxHealth) => maxHealth + health.getBonus(characterBody));
+                    c.EmitDelegate<Func<CharacterBody, float, float>>((characterBody, maxHealth) => {
+                        return maxHealth * health.getBaseMultiplier(characterBody) + health.getBonus(characterBody);
+                        });
                     c.Emit(OpCodes.Stloc, healthVar);
                 }
             }
@@ -64,11 +66,25 @@ namespace BetterAPI
 
         public class StatsEventHandler
         {
+            public class StatsEventArgs
+            {
+                public float stat;
+            }
             public delegate void StatsEvent(CharacterBody characterBody, StatsEventArgs e);
 
+            public event StatsEvent collectBaseMultipliers;
             public event StatsEvent collectBonuses;
             public event StatsEvent collectMultipliers;
-
+            public float getBaseMultiplier(CharacterBody characterBody)
+            {
+                if (collectMultipliers != null)
+                {
+                    var eventArgs = new StatsEventArgs { stat = 1f };
+                    collectMultipliers.Invoke(characterBody, eventArgs);
+                    return eventArgs.stat;
+                }
+                return 1f;
+            }
             public float getBonus(CharacterBody characterBody)
             {
                 if (collectBonuses != null)
@@ -88,13 +104,7 @@ namespace BetterAPI
                     collectMultipliers.Invoke(characterBody, eventArgs);
                     return eventArgs.stat;
                 }
-                return 1f;
-                
-            }
-
-            public class StatsEventArgs
-            {
-                public float stat;
+                return 1f;   
             }
         }
     }
