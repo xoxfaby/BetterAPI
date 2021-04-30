@@ -28,21 +28,36 @@ namespace BetterAPI
         private static void CharacterBody_RecalculateStats(ILContext il)
         {
             var c = new ILCursor(il);
-            var found = c.TryGotoNext(
-                x => x.MatchLdloc(51),
-                x => x.MatchMul(),
-                x => x.MatchStloc(50)
+            int healthVar = 0;
+            bool found = c.TryGotoNext(
+                x => x.MatchLdarg(0),
+                x => x.MatchLdloc(out healthVar),
+                x => x.MatchCall<CharacterBody>("set_maxHealth")
             );
-            c.Index += 3;
+
             if (found)
             {
-                c.Emit(OpCodes.Ldloc, 50);
+                c.Emit(OpCodes.Ldloc, healthVar);
                 c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate<Func<CharacterBody,float>>((characterBody) => health.getMultiplier(characterBody));
-                c.Emit(OpCodes.Mul);
-                c.Emit(OpCodes.Stloc, 50);
-            }
+                c.EmitDelegate<Func<CharacterBody,float, float>>((characterBody, maxHealth) => maxHealth * health.getMultiplier(characterBody));
+                c.Emit(OpCodes.Stloc, healthVar);
 
+
+                found = c.TryGotoPrev(
+                    x => x.MatchLdloc(healthVar),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchMul()
+                );
+
+                if (found)
+                {
+
+                    c.Emit(OpCodes.Ldloc, healthVar);
+                    c.Emit(OpCodes.Ldarg_0);
+                    c.EmitDelegate<Func<CharacterBody, float, float>>((characterBody, maxHealth) => maxHealth + health.getBonus(characterBody));
+                    c.Emit(OpCodes.Stloc, healthVar);
+                }
+            }
         }
 
 
