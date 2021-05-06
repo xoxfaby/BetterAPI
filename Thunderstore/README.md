@@ -33,6 +33,16 @@ https://github.com/xoxfaby/BetterAPI
 
 ## Changelog
 
+## v1.4.0
+ - Removed MMHook Dependency
+ - Added BetterUnityPlugin which includes a HookManager for adding hooks and events for Awake, OnEnable, etc. 
+   HookManager only adds hooks for methods actually used to it should provide better performance than MMHook. See MoreItems for examples on how to use the HookManager.  
+ - Buffs: It's now possible to provide a buff name & descriptions. These can be consumed by other mods, for example BetterUI adding better tooltips for buffs.
+ - Interactables Beta: Minimum count for interactables can be provided (Spawn at least #).
+ - Stats Beta: Made the Health hook IL way more robust, it should now survive most updates to RecalculateStats.
+ - Stats Beta: Added BaseMultiplier which is applied before flat bonuses. The order is now (BaseStat =>) Base Multiplier => Flat Bonuses => Multiplier. 
+ - 
+
 ### v1.3.3
  - Registers mods that add a contentpack to the networed mod list.
  - Only sets isModded to true if a mod has added a contentpack.
