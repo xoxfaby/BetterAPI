@@ -1,6 +1,7 @@
-﻿{
+﻿
+{
   "name": "BetterAPI",
-  "version_number": "1.4.0",
+  "version_number": "1.5.0",
   "website_url": "https://github.com/xoxfaby/BetterAPI",
   "description": "Very simple API implementation.",
   "dependencies": [

@@ -12,11 +12,14 @@ namespace BetterAPI
         internal static Dictionary<BuffDef, BuffInfo> buffInfos = new Dictionary<BuffDef, BuffInfo>();
         public static void Add(BuffDef buffDef)
         {
-            Add(buffDef, Assembly.GetCallingAssembly().GetName().Name);
+            String contentPackIdentifier = Assembly.GetCallingAssembly().GetName().Name;
+            if (!ContentPacks.assemblyDict.ContainsKey(contentPackIdentifier)) ContentPacks.assemblyDict[contentPackIdentifier] = Assembly.GetCallingAssembly();
+            Add(buffDef, contentPackIdentifier);
         }
         public static void Add(BuffDef buffDef, String contentPackIdentifier = null)
         {
             contentPackIdentifier = contentPackIdentifier ?? Assembly.GetCallingAssembly().GetName().Name;
+            if (!ContentPacks.assemblyDict.ContainsKey(contentPackIdentifier)) ContentPacks.assemblyDict[contentPackIdentifier] = Assembly.GetCallingAssembly();
             ContentPacks.Packs[contentPackIdentifier].buffDefs.Add(buffDef);
         }
 
@@ -44,12 +47,12 @@ namespace BetterAPI
         public static string GetName(BuffDef buffDef)
         {
             buffInfos.TryGetValue(buffDef, out BuffInfo buffInfo);
-            return string.IsNullOrEmpty(buffInfo.nameToken) ? null : RoR2.Language.GetString(buffInfo.nameToken);
+            return string.IsNullOrEmpty(buffInfo.nameToken) ? buffDef.name : RoR2.Language.GetString(buffInfo.nameToken);
         }
         public static string GetDescription(BuffDef buffDef)
         {
             buffInfos.TryGetValue(buffDef, out BuffInfo buffInfo);
-            return string.IsNullOrEmpty(buffInfo.descriptionToken) ? null : RoR2.Language.GetString(buffInfo.descriptionToken);
+            return string.IsNullOrEmpty(buffInfo.descriptionToken) ? String.Empty : RoR2.Language.GetString(buffInfo.descriptionToken);
         }
 
         public struct BuffInfo

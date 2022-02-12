@@ -21,12 +21,15 @@ namespace BetterAPI
 
         public static ItemDef Add(ItemDef itemDef, CharacterItemDisplayRule[] characterItemDisplayRules = null)
         {
-            return Add(itemDef, characterItemDisplayRules, Assembly.GetCallingAssembly().GetName().Name);
+            String contentPackIdentifier = Assembly.GetCallingAssembly().GetName().Name;
+            if (!ContentPacks.assemblyDict.ContainsKey(contentPackIdentifier)) ContentPacks.assemblyDict[contentPackIdentifier] = Assembly.GetCallingAssembly();
+            return Add(itemDef, characterItemDisplayRules, contentPackIdentifier);
         }
 
         public static ItemDef Add(ItemDef itemDef, CharacterItemDisplayRule[] characterItemDisplayRules = null, String contentPackIdentifier = null)
         {
             contentPackIdentifier = contentPackIdentifier ?? Assembly.GetCallingAssembly().GetName().Name;
+            if(!ContentPacks.assemblyDict.ContainsKey(contentPackIdentifier)) ContentPacks.assemblyDict[contentPackIdentifier] = Assembly.GetCallingAssembly();
             ContentPacks.Packs[contentPackIdentifier].itemDefs.Add(itemDef);
             if(characterItemDisplayRules != null)
             {
@@ -39,11 +42,14 @@ namespace BetterAPI
         }
         public static ItemDef Add(ItemTemplate itemTemplate)
         {
-            return Add(itemTemplate, Assembly.GetCallingAssembly().GetName().Name);
+            String contentPackIdentifier = Assembly.GetCallingAssembly().GetName().Name;
+            if (!ContentPacks.assemblyDict.ContainsKey(contentPackIdentifier)) ContentPacks.assemblyDict[contentPackIdentifier] = Assembly.GetCallingAssembly();
+            return Add(itemTemplate, contentPackIdentifier);
         }
         public static ItemDef Add(ItemTemplate itemTemplate, String contentPackIdentifier = null)
         {
             contentPackIdentifier = contentPackIdentifier ?? Assembly.GetCallingAssembly().GetName().Name;
+            if (!ContentPacks.assemblyDict.ContainsKey(contentPackIdentifier)) ContentPacks.assemblyDict[contentPackIdentifier] = Assembly.GetCallingAssembly();
             ItemDef itemDef = ScriptableObject.CreateInstance<ItemDef>();
             itemDef.name = itemTemplate.internalName;
             itemDef.tier = itemTemplate.tier;

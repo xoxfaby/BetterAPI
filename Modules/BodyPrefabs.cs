@@ -11,11 +11,14 @@ namespace BetterAPI
     {
         public static void Add(GameObject prefab)
         {
-            Add(prefab, Assembly.GetCallingAssembly().GetName().Name);
+            String contentPackIdentifier = Assembly.GetCallingAssembly().GetName().Name;
+            if (!ContentPacks.assemblyDict.ContainsKey(contentPackIdentifier)) ContentPacks.assemblyDict[contentPackIdentifier] = Assembly.GetCallingAssembly();
+            Add(prefab, contentPackIdentifier);
         }
         public static void Add(GameObject prefab, String contentPackIdentifier = null)
         {
             contentPackIdentifier = contentPackIdentifier ?? Assembly.GetCallingAssembly().GetName().Name;
+            if (!ContentPacks.assemblyDict.ContainsKey(contentPackIdentifier)) ContentPacks.assemblyDict[contentPackIdentifier] = Assembly.GetCallingAssembly();
             if (!ContentPacks.Packs[contentPackIdentifier].bodyPrefabs.Contains(prefab))
             {
                 ContentPacks.Packs[contentPackIdentifier].bodyPrefabs.Add(prefab);

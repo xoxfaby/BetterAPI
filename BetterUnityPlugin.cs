@@ -22,67 +22,41 @@ namespace BetterAPI
 
         virtual protected void Awake()
         {
-            if (onAwake != null)
-            {
-                onAwake.Invoke();
-                RoR2.SceneDirector.onGenerateInteractableCardSelection += SceneDirector_onGenerateInteractableCardSelection;
-            }
-        }
-
-        private void SceneDirector_onGenerateInteractableCardSelection(RoR2.SceneDirector arg1, RoR2.DirectorCardCategorySelection arg2)
-        {
-            throw new NotImplementedException();
+            if (onAwake != null) onAwake();
         }
 
         virtual protected void Start()
         {
-            if (onStart != null)
-            {
-                onStart();
-            }
+            if (onStart != null) onStart();
         }
         virtual protected void OnEnable()
         {
-            if (onEnable != null)
-            {
-                onEnable();
-            }
+            if (onEnable != null) onEnable();
         }
         virtual protected void OnDisable()
         {
-            if (onDisable != null)
-            {
-                onDisable();
-            }
+            if (onDisable != null) onDisable();
         }
         virtual protected void Update()
         {
-            if (onUpdate != null)
-            {
-                onUpdate();
-            }
+            if (onUpdate != null) onUpdate();
         }
         virtual protected void FixedUpdate()
         {
-            if (onFixedUpdate != null)
-            {
-                onFixedUpdate();
-            }
+            if (onFixedUpdate != null) onFixedUpdate();
         }
         virtual protected void LateUpdate()
         {
-            if (onLateUpdate != null)
-            {
-                onLateUpdate();
-            }
+            if (onLateUpdate != null) onLateUpdate();
         }
 
         public class HookManager
         { 
-            private static List<(MethodInfo methodFrom, MethodInfo methodTo)> hookSignatures = new List<(MethodInfo, MethodInfo)>();
-            private static List<(MethodInfo methodFrom, MonoMod.Cil.ILContext.Manipulator ILHookMethod)> ILHookMethods = new List<(MethodInfo, MonoMod.Cil.ILContext.Manipulator)>();
-            private static List<Hook> hooks = new List<Hook>();
-            private static List<ILHook> ILHooks = new List<ILHook>();
+            private List<(MethodInfo methodFrom, MethodInfo methodTo)> hookSignatures = new List<(MethodInfo, MethodInfo)>();
+            private List<(MethodInfo methodFrom, MonoMod.Cil.ILContext.Manipulator ILHookMethod)> ILHookMethods = new List<(MethodInfo, MonoMod.Cil.ILContext.Manipulator)>();
+            private List<Hook> hooks = new List<Hook>();
+            private List<ILHook> ILHooks = new List<ILHook>();
+            private bool enabled = false;
 
             public HookManager()
             {
@@ -90,20 +64,22 @@ namespace BetterAPI
                 onDisable += BetterUnityPlugin_onDisable;
             }
 
-            private static void BetterUnityPlugin_onEnable()
+            private void BetterUnityPlugin_onEnable()
             {
-                foreach (var hook in HookManager.hookSignatures)
+                enabled = true;
+                foreach (var hook in hookSignatures)
                 {
                     hooks.Add(new Hook(hook.methodFrom, hook.methodTo));
                 }
-                foreach (var hook in HookManager.ILHookMethods)
+                foreach (var hook in ILHookMethods)
                 {
                     ILHooks.Add(new ILHook(hook.methodFrom, hook.ILHookMethod));
                 }
             }
 
-            private static void BetterUnityPlugin_onDisable()
+            private void BetterUnityPlugin_onDisable()
             {
+                enabled = false;
                 foreach (var hook in hooks)
                 {
                     hook.Dispose();
@@ -274,10 +250,11 @@ namespace BetterAPI
                 MethodInfo methodFrom = FindMethod(type, methodName, types, bindings);
                 if (methodFrom == null)
                 {
-                    UnityEngine.Debug.LogWarning($"Could not hook method {methodName} of {type}, method not found.");
+                    UnityEngine.Debug.LogError($"Could not hook method {methodName} of {type}, method not found.");
                     return;
                 }
                 ILHookMethods.Add((methodFrom, ILHookMethod));
+                if (enabled) ILHooks.Add(new ILHook(methodFrom, ILHookMethod));
             }
             public void Add(Type type, string methodName, Type[] types, MethodInfo hookMethod, BindingFlags bindings = BindingFlags.Default)
             {
@@ -285,10 +262,11 @@ namespace BetterAPI
                 MethodInfo methodFrom = FindMethod(type, methodName, types, bindings);
                 if (methodFrom == null)
                 {
-                    UnityEngine.Debug.LogWarning($"Could not hook method {methodName} of {type}, method not found.");
+                    UnityEngine.Debug.LogError($"Could not hook method {methodName} of {type}, method not found.");
                     return;
                 }
                 hookSignatures.Add((methodFrom, hookMethod));
+                if (enabled) hooks.Add(new Hook(methodFrom, hookMethod));
             }
         }
     }

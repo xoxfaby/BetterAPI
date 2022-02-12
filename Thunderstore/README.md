@@ -7,6 +7,16 @@ It should be enough to implement simple items, buffs, etc.
 For an example, check out https://github.com/xoxfaby/MoreItems
 
 
+## Support Me
+
+If you like what I'm doing, consider supporting me through GitHub Sponsors so I can keep doing it:
+
+https://github.com/sponsors/xoxfaby (preferred)
+https://patreon.com/xoxfaby
+or directly through paypal:
+https://streamelements.com/xoxfaby/tip
+
+
 ## Currently implemented APIs:
  - Items
  - Buffs
@@ -16,12 +26,6 @@ For an example, check out https://github.com/xoxfaby/MoreItems
  - CostTypes
  - Interactables (BETA)
  - Stats (BETA)
-
-## Support Me
-
-If you like what I'm doing, consider supporting me through GitHub Sponsors so I can keep doing it:
-
-https://github.com/sponsors/xoxfaby
 
 ## Help & Feedback
 
@@ -33,10 +37,16 @@ https://github.com/xoxfaby/BetterAPI
 
 ## Changelog
 
+## v1.5.0
+ - BetterUnityPlugin: ContentPacks: Added Method FindAssembly to return the Assembly that added a content pack via BetterAPI. 
+
+### v1.4.1
+ - BetterUnityPlugin: Bugfix: Fixed bug that prevent hooks from being added if they were added after plugin enable. 
+
 ## v1.4.0
  - Removed MMHook Dependency
  - Added BetterUnityPlugin which includes a HookManager for adding hooks and events for Awake, OnEnable, etc. 
-   HookManager only adds hooks for methods actually used to it should provide better performance than MMHook. See MoreItems for examples on how to use the HookManager.  
+   HookManager only adds hooks for methods actually used so it should provide better performance than MMHook. See MoreItems for examples on how to use the HookManager.  
  - Buffs: It's now possible to provide a buff name & descriptions. These can be consumed by other mods, for example BetterUI adding better tooltips for buffs.
  - Interactables Beta: Minimum count for interactables can be provided (Spawn at least #).
  - Stats Beta: Made the Health hook IL way more robust, it should now survive most updates to RecalculateStats.
