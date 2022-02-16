@@ -25,6 +25,10 @@ namespace BetterAPI
                     return contentPackProviders[identifier];
                 }
             }
+            internal bool TryGetValue(string key, out ContentPackProvider outPut)
+            {
+                return contentPackProviders.TryGetValue(key, out outPut);
+            }
         }
         public static Assembly FindAssembly(String contentPackIdentifier)
         {
@@ -34,17 +38,34 @@ namespace BetterAPI
             }
             return null;
         }
-        internal class ContentPackProvider : IContentPackProvider
+
+        public static ContentPackProvider GetContentPackProvider(String contentPackIdentifier = null)
         {
-            internal readonly List<BuffDef> buffDefs = new List<BuffDef>();
-            internal readonly List<ItemDef> itemDefs = new List<ItemDef>();
-            internal readonly List<GameObject> bodyPrefabs = new List<GameObject>();
-            internal readonly List<GameObject> masterPrefabs = new List<GameObject>();
-            internal readonly List<GameObject> networkedPrefabs = new List<GameObject>();
-            internal readonly List<GameObject> projectilePrefabs = new List<GameObject>();
+            contentPackIdentifier = contentPackIdentifier ?? Assembly.GetCallingAssembly().GetName().Name;
+            if (Packs.TryGetValue(contentPackIdentifier, out var contentPackProvider))
+            {
+                return contentPackProvider;
+            }
+            return null;
+        }
+
+        public class ContentPackProvider : IContentPackProvider
+        {
+            public readonly List<ArtifactDef> artifactDefs = new List<ArtifactDef>();
+            public readonly List<GameObject> bodyPrefabs = new List<GameObject>();
+            public readonly List<BuffDef> buffDefs = new List<BuffDef>();
+            public readonly List<EquipmentDef> equipmentDefs = new List<EquipmentDef>();
+            public readonly List<ItemDef> itemDefs = new List<ItemDef>();
+            public readonly List<GameObject> masterPrefabs = new List<GameObject>();
+            public readonly List<GameObject> networkedPrefabs = new List<GameObject>();
+            public readonly List<GameObject> projectilePrefabs = new List<GameObject>();
+            public readonly List<RoR2.Skills.SkillDef> skillDefs = new List<RoR2.Skills.SkillDef>();
+            public readonly List<RoR2.Skills.SkillFamily> skillFamilies = new List<RoR2.Skills.SkillFamily>();
+            public readonly List<SurvivorDef> survivorDefs = new List<SurvivorDef>();
+            public readonly List<UnlockableDef> unlockableDefs = new List<UnlockableDef>();
 
             public string identifier { get; private set; }
-            private readonly ContentPack contentPack = new ContentPack();
+            public readonly ContentPack contentPack = new ContentPack();
             internal ContentPackProvider(String identifier)
             {
                 this.identifier = identifier;
@@ -59,12 +80,20 @@ namespace BetterAPI
             public IEnumerator LoadStaticContentAsync(LoadStaticContentAsyncArgs args)
             {
                 this.contentPack.identifier = this.identifier;
-                contentPack.buffDefs.Add(buffDefs.ToArray());
-                contentPack.itemDefs.Add(itemDefs.ToArray());
+                contentPack.artifactDefs.Add(artifactDefs.ToArray());
                 contentPack.bodyPrefabs.Add(bodyPrefabs.ToArray());
+                contentPack.buffDefs.Add(buffDefs.ToArray());
+                contentPack.equipmentDefs.Add(equipmentDefs.ToArray());
+                contentPack.itemDefs.Add(itemDefs.ToArray());
                 contentPack.masterPrefabs.Add(masterPrefabs.ToArray());
                 contentPack.networkedObjectPrefabs.Add(networkedPrefabs.ToArray());
                 contentPack.projectilePrefabs.Add(projectilePrefabs.ToArray());
+                contentPack.skillDefs.Add(skillDefs.ToArray());
+                contentPack.skillFamilies.Add(skillFamilies.ToArray());
+                contentPack.survivorDefs.Add(survivorDefs.ToArray());
+                contentPack.unlockableDefs.Add(unlockableDefs.ToArray());
+                
+
 
                 args.ReportProgress(1f);
                 yield break;

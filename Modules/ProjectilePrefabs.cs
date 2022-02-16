@@ -11,15 +11,6 @@ namespace BetterAPI
 {
     public static class ProjectilePrefabs
     {
-        static ProjectilePrefabs()
-        {
-        }
-        public static void Add(GameObject prefab)
-        {
-            String contentPackIdentifier = Assembly.GetCallingAssembly().GetName().Name;
-            if (!ContentPacks.assemblyDict.ContainsKey(contentPackIdentifier)) ContentPacks.assemblyDict[contentPackIdentifier] = Assembly.GetCallingAssembly();
-            Add(prefab, contentPackIdentifier);
-        }
         public static void Add(GameObject prefab, String contentPackIdentifier = null)
         {
             contentPackIdentifier = contentPackIdentifier ?? Assembly.GetCallingAssembly().GetName().Name;

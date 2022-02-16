@@ -10,12 +10,6 @@ namespace BetterAPI
     public static class Buffs
     {
         internal static Dictionary<BuffDef, BuffInfo> buffInfos = new Dictionary<BuffDef, BuffInfo>();
-        public static void Add(BuffDef buffDef)
-        {
-            String contentPackIdentifier = Assembly.GetCallingAssembly().GetName().Name;
-            if (!ContentPacks.assemblyDict.ContainsKey(contentPackIdentifier)) ContentPacks.assemblyDict[contentPackIdentifier] = Assembly.GetCallingAssembly();
-            Add(buffDef, contentPackIdentifier);
-        }
         public static void Add(BuffDef buffDef, String contentPackIdentifier = null)
         {
             contentPackIdentifier = contentPackIdentifier ?? Assembly.GetCallingAssembly().GetName().Name;
