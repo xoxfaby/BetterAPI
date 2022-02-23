@@ -1,3 +1,5 @@
+[![.NET](https://github.com/xoxfaby/BetterAPI/actions/workflows/dotnet.yml/badge.svg)](https://github.com/xoxfaby/BetterAPI/actions/workflows/dotnet.yml)
+
 # BetterAPI
 
 A simple library that adds thin wrappers around the new RoR2 Content Pack system with some helper functionality.

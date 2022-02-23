@@ -5,6 +5,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>BetterAPI</AssemblyName>
     <RootNamespace>BetterAPI</RootNamespace>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -13,6 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="BepInEx.Core" Version="5.4.9" />
+    <PackageReference Include="BetterUnityPlugin" Version="1.0.0" />
     <PackageReference Include="RiskOfRain2.GameLibs" Version="1.1.1.4-r.1" />
     <PackageReference Include="UnityEngine.Modules" Version="2018.4.16" />
   </ItemGroup>
