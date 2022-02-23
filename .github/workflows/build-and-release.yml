@@ -19,8 +19,10 @@ jobs:
   release-thunderstore:
     needs: build
     uses: xoxfaby/actions/.github/workflows/thunderstore.yml@main
+    with:
+      version: needs.build.outputs.version
     secrets:
-      NUGET_TOKEN: ${{ secrets.THUNDERSTORE_TOKEN }}
+      THUNDERSTORE_TOKEN: ${{ secrets.THUNDERSTORE_TOKEN }}
 
   release-github:
     needs: release-thunderstore
