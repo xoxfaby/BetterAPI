@@ -17,13 +17,13 @@ jobs:
       NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
 
   release-thunderstore:
-  needs: build
-  uses: xoxfaby/actions/.github/workflows/thunderstore.yml@main
-  secrets:
-    NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
+    needs: build
+    uses: xoxfaby/actions/.github/workflows/thunderstore.yml@main
+    secrets:
+      NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
 
   release-github:
-  needs: release-thunderstore
-  uses: xoxfaby/actions/.github/workflows/release.yml@main
-  secrets:
-    NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
+    needs: release-thunderstore
+    uses: xoxfaby/actions/.github/workflows/release.yml@main
+    secrets:
+      NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
