@@ -1,7 +1,7 @@
 name: .NET
 
 on:
-  branches:
+  push:
   pull_request:
 
 jobs:
