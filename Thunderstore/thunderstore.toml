@@ -26,6 +26,6 @@ source = "../bin/Release/netstandard2.0/publish/BetterUnityPlugin.dll"
 target = "BetterUnityPlugin.dll"
 
 [publish]
-repository = "https://thunderstore.io"
+repository = "https://thunderstore.dev"
 communities = ["Risk of Rain2"]
 categories = ["Mods", "Libraries"]
