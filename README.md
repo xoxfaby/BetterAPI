@@ -20,14 +20,16 @@ https://streamelements.com/xoxfaby/tip
 
 
 ## Currently implemented APIs:
- - Items
+ - Artifacts
  - Buffs
+ - CostTypes
+ - Equipments
+ - Interactables (BETA)
+ - Items
  - Languages
  - Prefabs
  - Objectives
- - CostTypes
- - Interactables (BETA)
- - Stats (BETA)
+ - Stats
 
 ## Help & Feedback
 
@@ -38,6 +40,16 @@ If you need help or have suggestions, create an issue on github, join my discord
 https://github.com/xoxfaby/BetterAPI
 
 ## Changelog
+
+# v2.0.0
+ - Breaking changes:
+   - Removed some deprecated overloads. If you were using these you will have to recompile your mod but you likely have to make no other changes
+   - Reworked Stats API, now has a lot more stats and collects the changes different. The system is now very robust so more stats can be added much more easily. If you need a stats, just request it. 
+   - Moved BetterUnityPlugin to its own assembly. It will ship with BetterAPI so you can still depend on it.
+ - Other Changes:
+ - Added methods to get the content pack of a mod and the assembly a contentpack was added by.
+ - BetterAPI and all my other mods are now on NuGet for easier development. 
+
 
 ## v1.5.0
  - BetterUnityPlugin: ContentPacks: Added Method FindAssembly to return the Assembly that added a content pack via BetterAPI. 
