@@ -27,5 +27,5 @@ target = "BetterUnityPlugin.dll"
 
 [publish]
 repository = "https://thunderstore.io"
-communities = ["Risk of Rain2"]
-categories = ["Mods", "Libraries"]
+communities = ["riskofrain2"]
+categories = ["mods", "libraries"]
