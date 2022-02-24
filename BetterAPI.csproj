@@ -1,22 +1,22 @@
-﻿
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>BetterAPI</AssemblyName>
     <RootNamespace>BetterAPI</RootNamespace>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
+    <InformationalVersion>2.0.0+Branch.main.Sha.d27f58d633bceca47459eba414d0e082c3634380</InformationalVersion>
+    <Version>2.0.0</Version>
+    <PackageId>RoR2-BetterAPI</PackageId>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="BepInEx.Core" Version="5.4.9" />
     <PackageReference Include="BetterUnityPlugin" Version="1.0.0" />
     <PackageReference Include="RiskOfRain2.GameLibs" Version="1.1.1.4-r.1" />
     <PackageReference Include="UnityEngine.Modules" Version="2018.4.16" />
   </ItemGroup>
-
 </Project>
