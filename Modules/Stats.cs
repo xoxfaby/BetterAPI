@@ -22,7 +22,7 @@ namespace BetterAPI
         public static Stat Curse = Stat.withPropertyHook(nameof(CharacterBody.cursePenalty));
 
 
-        private static System.Reflection.BindingFlags allFlags = System.Reflection.BindingFlags.Public
+        private const System.Reflection.BindingFlags allFlags = System.Reflection.BindingFlags.Public
         | System.Reflection.BindingFlags.NonPublic
         | System.Reflection.BindingFlags.Instance
         | System.Reflection.BindingFlags.Static;
