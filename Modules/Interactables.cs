@@ -97,7 +97,7 @@ namespace BetterAPI
                         {
                             placementMode = DirectorPlacementRule.PlacementMode.Random
                         };
-                        GameObject gameObject = self.directorCore.TrySpawnObject(new DirectorSpawnRequest(interactable.directorCard.spawnCard, placementRule, self.rng));
+                        GameObject gameObject = DirectorCore.instance.TrySpawnObject(new DirectorSpawnRequest(interactable.directorCard.spawnCard, placementRule, self.rng));
                         if (gameObject)
                         {
                             PurchaseInteraction component = gameObject.GetComponent<PurchaseInteraction>();
@@ -220,7 +220,7 @@ namespace BetterAPI
             interactableDirectorCard.spawnCard = spawnCard;
             interactableDirectorCard.selectionWeight = interactable.selectionWeight;
             interactableDirectorCard.spawnDistance = interactable.spawnDistance;
-            interactableDirectorCard.allowAmbushSpawn = interactable.allowAmbushSpawn;
+            //interactableDirectorCard.allowAmbushSpawn = interactable.allowAmbushSpawn;
             interactableDirectorCard.preventOverhead = interactable.preventOverhead;
             interactableDirectorCard.minimumStageCompletions = interactable.minimumStageCompletions;
             interactableDirectorCard.requiredUnlockableDef = interactable.requiredUnlockableDef;

@@ -48,7 +48,7 @@ namespace BetterAPI
                     }
                     else if(!Run.instance)
                     {
-                        foreach (var userProfile in UserProfile.loggedInProfiles)
+                        foreach (var userProfile in PlatformSystems.saveSystem.loggedInProfiles)
                         {
                             if (userProfile.HasUnlockable(itemDef.unlockableDef)) itemDefs.Add(itemDef);
                             continue;
