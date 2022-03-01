@@ -8,5 +8,12 @@ namespace BetterAPI
     {
         public const string Version = "2.0.0";
         public override BaseUnityPlugin typeReference => throw new NotImplementedException();
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            this.gameObject.hideFlags |= UnityEngine.HideFlags.HideAndDontSave;
+        }
     }
 }
