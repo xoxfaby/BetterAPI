@@ -16,7 +16,8 @@ namespace BetterAPI
         public static Stat Armor = Stat.withBaseStatHook(nameof(CharacterBody.baseArmor));
         public static Stat MoveSpeed = Stat.withBaseStatHook(nameof(CharacterBody.baseMoveSpeed));
         public static Stat AttackSpeed = Stat.withBaseStatHook(nameof(CharacterBody.baseAttackSpeed));
-        public static Stat CritChance = Stat.withBaseStatHook(nameof(CharacterBody.baseCrit));
+        public static Stat CriticalChance = Stat.withBaseStatHook(nameof(CharacterBody.baseCrit));
+        public static Stat CriticalDamage = Stat.withPropertyHook(nameof(CharacterBody.critMultiplier));
         public static Stat JumpPower = Stat.withBaseStatHook(nameof(CharacterBody.baseJumpPower));
         public static Stat JumpCount = Stat.withBaseStatHook(nameof(CharacterBody.baseJumpCount));
         public static Stat Curse = Stat.withPropertyHook(nameof(CharacterBody.cursePenalty));
@@ -43,7 +44,8 @@ namespace BetterAPI
                 Armor.multiplierEnabled =
                 MoveSpeed.multiplierEnabled =
                 AttackSpeed.multiplierEnabled =
-                CritChance.multiplierEnabled =
+                CriticalChance.multiplierEnabled =
+                CriticalDamage.multiplierEnabled =
                 JumpPower.multiplierEnabled =
                 JumpCount.multiplierEnabled =
                 Curse.multiplierEnabled = false;
@@ -68,7 +70,8 @@ namespace BetterAPI
                     characterBody.armor *= Armor.getMultiplier(characterBody);
                     characterBody.moveSpeed *= MoveSpeed.getMultiplier(characterBody);
                     characterBody.attackSpeed *= AttackSpeed.getMultiplier(characterBody);
-                    characterBody.crit *= CritChance.getMultiplier(characterBody);
+                    characterBody.crit *= CriticalChance.getMultiplier(characterBody);
+                    characterBody.critMultiplier *= CriticalDamage.getMultiplier(characterBody);
                     characterBody.jumpPower *= JumpPower.getMultiplier(characterBody);
                     characterBody.maxJumpCount *= (int)JumpCount.getMultiplier(characterBody);
                     characterBody.cursePenalty *= Curse.getMultiplier(characterBody);
@@ -80,7 +83,8 @@ namespace BetterAPI
                     Armor.multiplierEnabled =
                     MoveSpeed.multiplierEnabled =
                     AttackSpeed.multiplierEnabled =
-                    CritChance.multiplierEnabled =
+                    CriticalChance.multiplierEnabled =
+                    CriticalDamage.multiplierEnabled =
                     JumpPower.multiplierEnabled =
                     JumpCount.multiplierEnabled =
                     Curse.multiplierEnabled = true;
