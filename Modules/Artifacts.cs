@@ -22,10 +22,10 @@ namespace BetterAPI
             if (!ContentPacks.assemblyDict.ContainsKey(contentPackIdentifier)) ContentPacks.assemblyDict[contentPackIdentifier] = Assembly.GetCallingAssembly();
             ArtifactDef artifactDef = ScriptableObject.CreateInstance<ArtifactDef>();
             artifactDef.cachedName = artifactTemplate.internalName;
-            artifactDef.pickupModelPrefab = artifactTemplate.prefab;
-            artifactDef.unlockableDef = artifactTemplate.unlockableDef;
-            artifactDef.smallIconDeselectedSprite = artifactTemplate.smallIconDeselectedSprite;
-            artifactDef.smallIconSelectedSprite = artifactTemplate.smallIconSelectedSprite;
+            artifactDef.pickupModelPrefab = artifactTemplate.prefab ?? artifactDef.pickupModelPrefab;
+            artifactDef.unlockableDef = artifactTemplate.unlockableDef ?? artifactDef.unlockableDef;
+            artifactDef.smallIconDeselectedSprite = artifactTemplate.smallIconDeselectedSprite ?? artifactDef.smallIconDeselectedSprite;
+            artifactDef.smallIconSelectedSprite = artifactTemplate.smallIconSelectedSprite ?? artifactDef.smallIconSelectedSprite;
             artifactDef.nameToken = $"ARTIFACT_{artifactTemplate.internalName.ToUpper()}_NAME";
             artifactDef.descriptionToken = $"ARTIFACT_{artifactTemplate.internalName.ToUpper()}_DESC";
 
@@ -35,15 +35,10 @@ namespace BetterAPI
             return Add(artifactDef, contentPackIdentifier);
         }
 
-        public struct ArtifactTemplate
+        public class ArtifactTemplate
         {
-            public string internalName;
             public string name;
-            public float cooldown;
-            public bool isLunar;
-            public bool isBoss;
-            public bool canDrop;
-            public BuffDef passiveBuffDef;
+            public string internalName;
             public string pickupText;
             public string descriptionText;
             public string loreText;

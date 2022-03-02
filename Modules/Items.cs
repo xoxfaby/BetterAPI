@@ -24,16 +24,16 @@ namespace BetterAPI
             if (!ContentPacks.assemblyDict.ContainsKey(contentPackIdentifier)) ContentPacks.assemblyDict[contentPackIdentifier] = Assembly.GetCallingAssembly();
             ItemDef itemDef = ScriptableObject.CreateInstance<ItemDef>();
             itemDef.name = itemTemplate.internalName;
-            itemDef.tier = itemTemplate.tier;
-            itemDef.canRemove = itemTemplate.canRemove;
-            itemDef.unlockableDef = itemTemplate.unlockableDef;
-            itemDef.pickupModelPrefab = itemTemplate.prefab;
-            itemDef.pickupIconSprite = itemTemplate.icon;
+            itemDef.tier = itemTemplate.tier ?? itemDef.tier;
+            itemDef.canRemove = itemTemplate.canRemove ?? itemDef.canRemove;
+            itemDef.unlockableDef = itemTemplate.unlockableDef ?? itemDef.unlockableDef;
+            itemDef.pickupModelPrefab = itemTemplate.prefab ?? itemDef.pickupModelPrefab;
+            itemDef.pickupIconSprite = itemTemplate.icon ?? itemDef.pickupIconSprite;
             itemDef.nameToken = $"ITEM_{itemTemplate.internalName.ToUpper()}_NAME";
             itemDef.pickupToken = $"ITEM_{itemTemplate.internalName.ToUpper()}_PICKUP";
             itemDef.descriptionToken = $"ITEM_{itemTemplate.internalName.ToUpper()}_DESC";
             itemDef.loreToken = $"ITEM_{itemTemplate.internalName.ToUpper()}_LORE";
-            itemDef.tags = itemTemplate.tags ?? new ItemTag[] { };
+            itemDef.tags = itemTemplate.tags ?? itemDef.tags;
 
             Languages.AddTokenString(itemDef.nameToken, itemTemplate.name);
             Languages.AddTokenString(itemDef.pickupToken, itemTemplate.pickupText);
@@ -43,17 +43,17 @@ namespace BetterAPI
             return Add(itemDef, itemTemplate.characterItemDisplayRules, contentPackIdentifier);
         }
 
-        public struct ItemTemplate
+        public class ItemTemplate
         {
-            public string internalName;
             public string name;
+            public string internalName;
             public string pickupText;
             public string descriptionText;
             public string loreText;
             public GameObject prefab;
             public Sprite icon;
-            public bool canRemove;
-            public ItemTier tier;
+            public bool? canRemove;
+            public ItemTier? tier;
             public ItemTag[] tags;
             public UnlockableDef unlockableDef;
 

@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+	<LangVersion>latest</LangVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>BetterAPI</AssemblyName>
     <RootNamespace>BetterAPI</RootNamespace>
