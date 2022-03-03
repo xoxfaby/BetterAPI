@@ -123,7 +123,16 @@ namespace BetterAPI
                         {
                             placementMode = DirectorPlacementRule.PlacementMode.Random
                         };
-                        GameObject gameObject = DirectorCore.instance.TrySpawnObject(new DirectorSpawnRequest(interactable.directorCard.spawnCard, placementRule, self.rng));
+
+                        GameObject gameObject = null;
+                        int counter = 0;
+                        while (gameObject == null)
+                        {
+                            counter++;
+                            gameObject = DirectorCore.instance.TrySpawnObject(new DirectorSpawnRequest(interactable.directorCard.spawnCard, placementRule, self.rng));
+                            if (counter >= 10) break;
+                        }
+
                         if (gameObject)
                         {
                             PurchaseInteraction component = gameObject.GetComponent<PurchaseInteraction>();
