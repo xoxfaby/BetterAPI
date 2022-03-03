@@ -28,6 +28,7 @@ namespace BetterAPI
         [Flags]
         public enum Stages : Int64
         {
+            None = 0,
             TitanicPlains = 2,
             DistantRoost = 4,
             WetlandAspect = 8,
