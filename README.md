@@ -41,6 +41,30 @@ https://github.com/xoxfaby/BetterAPI
 
 ## Changelog
 
+# v4.0.1
+ - Bugfixes:
+   - Delayed applying of IDRS until Item and BodyCatalog is ready
+   - Removed some debug messages
+
+# v4.0.0
+ - Breaking changes:
+   - Changed Interactables Stages flag to Int64
+
+# v3.0.0
+ - Breaking changes:
+   - Changed all the Templates to classes and made fields nullable, default values are taken from Vanilla.
+ - Additions:
+   - Added Critical Damage Stat. 
+
+# v2.0.3
+ - Bugfix: Hides BepInEx_Manager object so it doesn't get deleted which stops all mods from working. 
+
+### v2.0.2
+ - Bugfix: Fixes for CUM
+
+### v2.0.1
+ - Bugfix: Internal change that fixes Stat hooks
+
 # v2.0.0
  - Breaking changes:
    - Removed some deprecated overloads. If you were using these you will have to recompile your mod but you likely have to make no other changes
