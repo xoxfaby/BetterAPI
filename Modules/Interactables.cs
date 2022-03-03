@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -15,7 +15,7 @@ namespace BetterAPI
     public static class Interactables
     {
         public enum Category
-        { 
+        {
             Chests,
             Barrels,
             Shrines,
@@ -26,7 +26,7 @@ namespace BetterAPI
         }
 
         [Flags]
-        public enum Stages
+        public enum Stages : Int64
         {
             TitanicPlains = 2,
             DistantRoost = 4,
@@ -39,21 +39,35 @@ namespace BetterAPI
             GildedCoast = 512,
             MomentFractured = 1024,
             Bazaar = 2048,
-            VoidCell = 4096,
+            VoidFields = 4096,
             MomentWhole = 8192,
             SkyMeadow = 16384,
             BullwarksAmbry = 32768,
             Commencement = 65536,
             SunderedGrove = 131072,
+            BulwarksAmbry = 262144,
+            VoidLocus = 524288,
+            Planetarium = 1048576,
+            AphelianSanctuary = 2097152,
+            SimulacrumAphelianSanctuary = 4194304,
+            SimulacrumAbyssalDepths = 8388608,
+            SimulacrumRallypointDelta = 16777216,
+            SimulacrumTitanicPlains = 33554432,
+            SimulacrumAbandonedAquaduct = 67108864,
+            SimulacrumCommencement = 134217728,
+            SimulacrumSkyMeadow = 268435456,
+            SiphonedForest = 536870912,
+            SulfurPools = 1073741824,
 
             //Add new values before this point
             Last,
             All = (Last << 1) - 3,
-            Stage1 = TitanicPlains | DistantRoost,
-            Stage2 = WetlandAspect | AbandonedAqueduct,
-            Stage3 = RallypointDelta | ScorchedAcres,
+            Stage1 = TitanicPlains | DistantRoost | SiphonedForest,
+            Stage2 = WetlandAspect | AbandonedAqueduct | AphelianSanctuary,
+            Stage3 = RallypointDelta | ScorchedAcres | SulfurPools,
             Stage4 = AbyssalDepths | SirensCall,
-            Default = AbandonedAqueduct | AbyssalDepths | DistantRoost | RallypointDelta | ScorchedAcres | SirensCall | SkyMeadow | SunderedGrove | TitanicPlains | WetlandAspect
+            Simulacrum = SimulacrumAbandonedAquaduct | SimulacrumAbyssalDepths | SimulacrumAphelianSanctuary | SimulacrumCommencement | SimulacrumRallypointDelta | SimulacrumSkyMeadow | SimulacrumTitanicPlains,
+            Default = AbandonedAqueduct | AbyssalDepths | SiphonedForest | AphelianSanctuary | SulfurPools | DistantRoost | RallypointDelta | ScorchedAcres | SirensCall | SkyMeadow | SunderedGrove | TitanicPlains | WetlandAspect
         }
 
         public static Dictionary<Stages, List<string>> SceneNames = new Dictionary<Stages, List<string>>()
@@ -69,12 +83,24 @@ namespace BetterAPI
             { Stages.GildedCoast, new List<string>(){ "goldshores" } },
             { Stages.MomentFractured, new List<string>(){ "mysteryspace" } },
             { Stages.Bazaar, new List<string>(){ "bazaar" } },
-            { Stages.VoidCell, new List<string>(){ "arena" } },
+            { Stages.VoidFields, new List<string>(){ "arena" } },
             { Stages.MomentWhole, new List<string>(){ "limbo" } },
             { Stages.SkyMeadow, new List<string>(){ "skymeadow" } },
             { Stages.BullwarksAmbry, new List<string>(){ "artifactworld" } },
             { Stages.Commencement, new List<string>(){ "moon", "moon2" } },
-            { Stages.SunderedGrove, new List<string>(){ "rootjungle" } }
+            { Stages.SunderedGrove, new List<string>(){ "rootjungle" } },
+            { Stages.VoidLocus, new List<string>(){ "voidstage" } },
+            { Stages.Planetarium, new List<string>(){ "voidraid" } },
+            { Stages.AphelianSanctuary, new List<string>(){ "ancientloft" } },
+            { Stages.SimulacrumAbandonedAquaduct, new List<string>(){ "itgoolake" } },
+            { Stages.SimulacrumAbyssalDepths, new List<string>(){ "itdampcave" } },
+            { Stages.SimulacrumAphelianSanctuary, new List<string>(){ "itancientloft" } },
+            { Stages.SimulacrumCommencement, new List<string>(){ "itmoon" } },
+            { Stages.SimulacrumRallypointDelta, new List<string>(){ "itfrozenwall" } },
+            { Stages.SimulacrumSkyMeadow, new List<string>(){ "itskymeadow" } },
+            { Stages.SimulacrumTitanicPlains, new List<string>(){ "itgolemplains" } },
+            { Stages.SiphonedForest, new List<string>(){ "snowyforest" } },
+            { Stages.SulfurPools, new List<string>(){ "sulfurpools" } },    
         };
 
         private static List<InteractableInfo> registeredInteractables = new List<InteractableInfo>();
@@ -118,7 +144,7 @@ namespace BetterAPI
             if (NetworkServer.active)
             {
                 ClassicStageInfo stageInfo = SceneInfo.instance.GetComponent<ClassicStageInfo>();
-                foreach(InteractableInfo interactable in registeredInteractables)
+                foreach (InteractableInfo interactable in registeredInteractables)
                 {
                     if (interactable.multiplayerOnly && RoR2Application.isInMultiPlayer || !interactable.multiplayerOnly)
                     {
@@ -129,7 +155,7 @@ namespace BetterAPI
                         }
                     }
                 }
-                
+
             }
             orig(self);
         }
@@ -138,9 +164,10 @@ namespace BetterAPI
         {
             var names = new List<string>();
 
-            foreach( var scene in SceneNames)
+            foreach (var scene in SceneNames)
             {
-                if (scenes.HasFlag(scene.Key)) {
+                if (scenes.HasFlag(scene.Key))
+                {
                     foreach (var name in scene.Value)
                     {
                         names.Add(name);
@@ -184,7 +211,7 @@ namespace BetterAPI
 
             InteractableInfo info = new InteractableInfo(interactableDirectorCard, interactable.interactableCategory, sceneNames, interactable, interactable.multiplayerOnly, interactable.minimumCount);
 
-            if(interactable.interactablePrefab.GetComponent<NetworkIdentity>())
+            if (interactable.interactablePrefab.GetComponent<NetworkIdentity>())
             {
                 NetworkedPrefabs.Add(interactable.interactablePrefab, contentPackIdentifier);
             }
@@ -274,7 +301,7 @@ namespace BetterAPI
             public UnlockableDef requiredUnlockableDef;
             public UnlockableDef forbiddenUnlockableDef;
             public bool multiplayerOnly;
-            
+
 
             public InteractableTemplate()
             {
