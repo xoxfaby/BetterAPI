@@ -230,8 +230,6 @@ namespace BetterAPI
                     collectMultipliers.Invoke(characterBody, eventArgs);
                     var additiveMultipliers = eventArgs.additiveMultipliers.Aggregate((x, y) => x + y);
                     var multiplicativeMultipliers = eventArgs.multiplicativeMultipliers.Aggregate((x, y) => x * y) ;
-                    UnityEngine.Debug.Log(additiveMultipliers);
-                    UnityEngine.Debug.Log(multiplicativeMultipliers);
                     return additiveMultipliers * multiplicativeMultipliers;
                 }
                 return 1f;
