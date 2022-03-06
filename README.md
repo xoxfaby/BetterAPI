@@ -41,7 +41,14 @@ https://github.com/xoxfaby/BetterAPI
 
 ## Changelog
 
-# v4.0.1
+### v4.0.2
+ - Minor Change:
+   - ContentPacks: Create a ContentPackProvider if it is requested by GetContentPackProvider and it doesn't exist.
+   - Interactables: Added Stages.None flag
+ - Bugfixes:
+   - Interactables: Try to spawn interactables again if the node they happen to pick is occupied. 
+
+### v4.0.1
  - Bugfixes:
    - Delayed applying of IDRS until Item and BodyCatalog is ready
    - Removed some debug messages
