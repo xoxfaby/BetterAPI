@@ -42,11 +42,7 @@ namespace BetterAPI
         public static ContentPackProvider GetContentPackProvider(String contentPackIdentifier = null)
         {
             contentPackIdentifier = contentPackIdentifier ?? Assembly.GetCallingAssembly().GetName().Name;
-            if (Packs.TryGetValue(contentPackIdentifier, out var contentPackProvider))
-            {
-                return contentPackProvider;
-            }
-            return null;
+            return Packs[contentPackIdentifier];
         }
 
         public class ContentPackProvider : IContentPackProvider
