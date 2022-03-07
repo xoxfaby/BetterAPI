@@ -116,7 +116,7 @@ namespace BetterAPI
         {
             foreach (InteractableInfo interactable in registeredInteractables)
             {
-                if (interactable.minimumCount > 0)
+                if (interactable.minimumCount > 0 && interactable.scenes.Contains(SceneManager.GetActiveScene().name))
                 {
                     for (var i = 0; i < interactable.minimumCount; i++)
                     {
