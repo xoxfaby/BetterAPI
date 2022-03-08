@@ -39,26 +39,24 @@ namespace BetterAPI
             SirensCall = 256,
             GildedCoast = 512,
             MomentFractured = 1024,
-            Bazaar = 2048,
-            VoidFields = 4096,
-            MomentWhole = 8192,
-            SkyMeadow = 16384,
-            BullwarksAmbry = 32768,
-            Commencement = 65536,
-            SunderedGrove = 131072,
-            BulwarksAmbry = 262144,
-            VoidLocus = 524288,
-            Planetarium = 1048576,
-            AphelianSanctuary = 2097152,
-            SimulacrumAphelianSanctuary = 4194304,
-            SimulacrumAbyssalDepths = 8388608,
-            SimulacrumRallypointDelta = 16777216,
-            SimulacrumTitanicPlains = 33554432,
-            SimulacrumAbandonedAquaduct = 67108864,
-            SimulacrumCommencement = 134217728,
-            SimulacrumSkyMeadow = 268435456,
-            SiphonedForest = 536870912,
-            SulfurPools = 1073741824,
+            VoidFields = 2048,
+            MomentWhole = 4096,
+            SkyMeadow = 8192,
+            Commencement = 16384,
+            SunderedGrove = 32768,
+            BulwarksAmbry = 65536,
+            VoidLocus = 131072,
+            Planetarium = 262144,
+            AphelianSanctuary = 524288,
+            SimulacrumAphelianSanctuary = 1048576,
+            SimulacrumAbyssalDepths = 2097152,
+            SimulacrumRallypointDelta = 4194304,
+            SimulacrumTitanicPlains = 8388608,
+            SimulacrumAbandonedAquaduct = 16777216,
+            SimulacrumCommencement = 33554432,
+            SimulacrumSkyMeadow = 67108864,
+            SiphonedForest = 134217728,
+            SulfurPools = 268435456,
 
             //Add new values before this point
             Last,
@@ -83,11 +81,10 @@ namespace BetterAPI
             { Stages.SirensCall, new List<string>(){ "shipgraveyard" } },
             { Stages.GildedCoast, new List<string>(){ "goldshores" } },
             { Stages.MomentFractured, new List<string>(){ "mysteryspace" } },
-            { Stages.Bazaar, new List<string>(){ "bazaar" } },
             { Stages.VoidFields, new List<string>(){ "arena" } },
             { Stages.MomentWhole, new List<string>(){ "limbo" } },
             { Stages.SkyMeadow, new List<string>(){ "skymeadow" } },
-            { Stages.BullwarksAmbry, new List<string>(){ "artifactworld" } },
+            { Stages.BulwarksAmbry, new List<string>(){ "artifactworld" } },
             { Stages.Commencement, new List<string>(){ "moon", "moon2" } },
             { Stages.SunderedGrove, new List<string>(){ "rootjungle" } },
             { Stages.VoidLocus, new List<string>(){ "voidstage" } },
@@ -101,7 +98,7 @@ namespace BetterAPI
             { Stages.SimulacrumSkyMeadow, new List<string>(){ "itskymeadow" } },
             { Stages.SimulacrumTitanicPlains, new List<string>(){ "itgolemplains" } },
             { Stages.SiphonedForest, new List<string>(){ "snowyforest" } },
-            { Stages.SulfurPools, new List<string>(){ "sulfurpools" } },    
+            { Stages.SulfurPools, new List<string>(){ "sulfurpools" } },
         };
 
         private static List<InteractableInfo> registeredInteractables = new List<InteractableInfo>();
@@ -154,18 +151,20 @@ namespace BetterAPI
             if (NetworkServer.active)
             {
                 ClassicStageInfo stageInfo = SceneInfo.instance.GetComponent<ClassicStageInfo>();
-                foreach (InteractableInfo interactable in registeredInteractables)
+                if (stageInfo != null)
                 {
-                    if (interactable.multiplayerOnly && RoR2Application.isInMultiPlayer || !interactable.multiplayerOnly)
+                    foreach (InteractableInfo interactable in registeredInteractables)
                     {
-                        //Debug.Log("Trying to add " + interactable.directorCard.spawnCard.prefab.name + " to " + SceneManager.GetActiveScene().name);
-                        if (interactable.scenes.Contains(SceneManager.GetActiveScene().name))
+                        if (interactable.multiplayerOnly && RoR2Application.isInMultiPlayer || !interactable.multiplayerOnly)
                         {
-                            stageInfo.interactableCategories.AddCard((int)interactable.category, interactable.directorCard);
+                            //Debug.Log("Trying to add " + interactable.directorCard.spawnCard.prefab.name + " to " + SceneManager.GetActiveScene().name);
+                            if (interactable.scenes.Contains(SceneManager.GetActiveScene().name))
+                            {
+                                stageInfo.interactableCategories.AddCard((int)interactable.category, interactable.directorCard);
+                            }
                         }
                     }
                 }
-
             }
             orig(self);
         }
