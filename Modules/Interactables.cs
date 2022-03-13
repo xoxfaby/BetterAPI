@@ -87,6 +87,7 @@ namespace BetterAPI
             { Stages.VoidFields, new List<string>(){ "arena" } },
             { Stages.MomentWhole, new List<string>(){ "limbo" } },
             { Stages.SkyMeadow, new List<string>(){ "skymeadow" } },
+            { Stages.BulwarksAmbry, new List<string>(){ "artifactworld" } },
             { Stages.BullwarksAmbry, new List<string>(){ "artifactworld" } },
             { Stages.Commencement, new List<string>(){ "moon", "moon2" } },
             { Stages.SunderedGrove, new List<string>(){ "rootjungle" } },
@@ -154,18 +155,20 @@ namespace BetterAPI
             if (NetworkServer.active)
             {
                 ClassicStageInfo stageInfo = SceneInfo.instance.GetComponent<ClassicStageInfo>();
-                foreach (InteractableInfo interactable in registeredInteractables)
+                if (stageInfo != null)
                 {
-                    if (interactable.multiplayerOnly && RoR2Application.isInMultiPlayer || !interactable.multiplayerOnly)
+                    foreach (InteractableInfo interactable in registeredInteractables)
                     {
-                        //Debug.Log("Trying to add " + interactable.directorCard.spawnCard.prefab.name + " to " + SceneManager.GetActiveScene().name);
-                        if (interactable.scenes.Contains(SceneManager.GetActiveScene().name))
+                        if (interactable.multiplayerOnly && RoR2Application.isInMultiPlayer || !interactable.multiplayerOnly)
                         {
-                            stageInfo.interactableCategories.AddCard((int)interactable.category, interactable.directorCard);
+                            //Debug.Log("Trying to add " + interactable.directorCard.spawnCard.prefab.name + " to " + SceneManager.GetActiveScene().name);
+                            if (interactable.scenes.Contains(SceneManager.GetActiveScene().name))
+                            {
+                                stageInfo.interactableCategories.AddCard((int)interactable.category, interactable.directorCard);
+                            }
                         }
                     }
                 }
-
             }
             orig(self);
         }
