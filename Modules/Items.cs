@@ -24,7 +24,10 @@ namespace BetterAPI
             if (!ContentPacks.assemblyDict.ContainsKey(contentPackIdentifier)) ContentPacks.assemblyDict[contentPackIdentifier] = Assembly.GetCallingAssembly();
             ItemDef itemDef = ScriptableObject.CreateInstance<ItemDef>();
             itemDef.name = itemTemplate.internalName;
-            itemDef.tier = itemTemplate.tier ?? itemDef.tier;
+            ItemTierCatalog.availability.CallWhenAvailable(() =>
+            {
+                itemDef.tier = itemTemplate.tier ?? itemDef.tier;
+            });
             itemDef.canRemove = itemTemplate.canRemove ?? itemDef.canRemove;
             itemDef.unlockableDef = itemTemplate.unlockableDef ?? itemDef.unlockableDef;
             itemDef.pickupModelPrefab = itemTemplate.prefab ?? itemDef.pickupModelPrefab;
