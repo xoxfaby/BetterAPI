@@ -41,6 +41,9 @@ https://github.com/xoxfaby/BetterAPI
 
 ## Changelog
 
+### v4.0.3
+ - Bugfix: Updated for item tier changes.
+
 ### v4.0.2
  - Minor Change:
    - ContentPacks: Create a ContentPackProvider if it is requested by GetContentPackProvider and it doesn't exist.
